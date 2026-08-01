@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Къде да пренощуваме? — Избор на хотел и местоположение</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♨️</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=1" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="hero-kicker">Почивка в България · Една дата · Избор на хотел и местоположение</p>
+      <h1>♨️ Къде да пренощуваме?</h1>
+      <p class="hero-sub">
+        Гласувайте за любимата си дестинация (хотел или град), а в панела по-долу разгледайте
+        <strong>къде да спим, къде да ядем и какво да видим</strong> на всяко място.
+      </p>
+      <div class="hero-actions">
+        <a href="#locations" class="btn btn-primary">Виж 5-те дестинации</a>
+        <a href="#vote" class="btn btn-ghost">Гласувай сега</a>
+        <a href="#results" class="btn btn-ghost">Виж резултатите</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Дестинации -->
+    <section id="locations" class="section">
+      <div class="container">
+        <h2 class="section-title">5-те кратки списъка с дестинации</h2>
+        <p class="section-sub">Кликни върху карта, за да я избереш като любима (или я избери във формата за гласуване).</p>
+        <div id="location-cards" class="location-grid"></div>
+      </div>
+    </section>
+
+    <!-- Гласуване -->
+    <section id="vote" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">Пусни своя глас</h2>
+        <p class="section-sub">Всеки гласува веднъж. Гласовете се пазят на това устройство и могат да се споделят с линк.</p>
+
+        <button type="button" id="info-toggle" class="btn btn-secondary btn-block" aria-expanded="false">
+          🏨 Хотели, храна и забележителности (само информация)
+        </button>
+
+        <div class="vote-layout">
+          <form id="vote-form" class="card vote-card">
+            <label class="field">
+              <span>Твоето име / семейство</span>
+              <input type="text" id="voter-name" placeholder="напр. Семейство Иванови" required maxlength="40" />
+            </label>
+
+            <div class="field">
+              <span>Твоята любима дестинация</span>
+              <div id="favorite-picker" class="favorite-picker"></div>
+              <p class="hint">Твоят глас. Избери мястото, където най-много искаш да отседнем.</p>
+            </div>
+
+            <div class="field">
+              <span>Бележка (незадължително)</span>
+              <textarea id="voter-note" rows="2" placeholder="напр. Предпочитаме басейни, не искаме дълги преходи, искаме тишина..." maxlength="300"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-lg">Запиши гласа ми</button>
+              <button type="button" id="clear-vote" class="btn btn-ghost">Изтрий гласа ми</button>
+            </div>
+            <p id="save-status" class="save-status" role="status"></p>
+          </form>
+
+          <aside class="card share-card">
+            <h3>Сподели и събери гласовете</h3>
+            <p>Всяко устройство пази собствените си гласове. За да съберете отговорите на всички на една страница:</p>
+            <ol>
+              <li>Всеки гласува и натиска <strong>„Копирай моя линк“</strong>.</li>
+              <li>Изпраща ви линка (СМС / имейл / WhatsApp).</li>
+              <li>Поставяте всеки линк в адресната лента и го отваряте — гласът се добавя автоматично.</li>
+              <li>После отворете страницата на телевизора или споделете линка „всички гласове“.</li>
+            </ol>
+            <button type="button" id="copy-my-vote" class="btn btn-secondary btn-block">Копирай моя линк</button>
+            <button type="button" id="copy-all-votes" class="btn btn-secondary btn-block">Копирай линк с всички гласове</button>
+            <div class="input-row">
+              <input type="text" id="paste-vote" placeholder="Постави линк за гласуване тук" />
+              <button type="button" id="import-vote" class="btn btn-primary">Въведи</button>
+            </div>
+          </aside>
+        </div>
+
+        <div id="info-panel" class="info-panel card hidden"></div>
+      </div>
+    </section>
+
+    <!-- Резултати -->
+    <section id="results" class="section">
+      <div class="container">
+        <h2 class="section-title">Резултати</h2>
+
+        <div id="summary" class="summary card"></div>
+
+        <div class="results-grid">
+          <div class="card">
+            <h3>Разпределение на гласовете</h3>
+            <div id="favorite-tally" class="tally"></div>
+          </div>
+        </div>
+
+        <div class="card votes-list-card">
+          <h3>Кой вече е гласувал</h3>
+          <ul id="votes-list" class="votes-list"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Направено за груповата почивка в България · Гласувай, сподели и решете заедно ♨️</p>
+      <p class="footer-small">Пълното предложение с цени и маршрути: <a href="PROPOSAL.md">PROPOSAL.md</a></p>
+    </div>
+  </footer>
+
+  <script src="js/data.js?v=1"></script>
+  <script src="js/app.js?v=1"></script>
+</body>
+</html>
