@@ -140,9 +140,9 @@ const STORAGE_KEY = "hotspringVotesV1";
 // 1. Data integrity
 // ---------------------------------------------------------------------------
 
-test("data file defines exactly 5 locations with complete fields", () => {
-  assert.strictEqual(LOCATIONS.length, 5);
-  assert.strictEqual(new Set(LOCATIONS.map((l) => l.id)).size, 5, "ids must be unique");
+test("data file defines exactly 7 locations with complete fields", () => {
+  assert.strictEqual(LOCATIONS.length, 7);
+  assert.strictEqual(new Set(LOCATIONS.map((l) => l.id)).size, 7, "ids must be unique");
   LOCATIONS.forEach((l) => {
     ["id", "emoji", "flag", "name", "place", "specs", "price", "distance", "highlights", "why", "hotels", "eat", "see", "color"].forEach((f) => {
       assert.ok(l[f] !== undefined && l[f] !== null && l[f] !== "", `location ${l.id} missing "${f}"`);
@@ -158,15 +158,17 @@ test("data file defines exactly 5 locations with complete fields", () => {
   });
 });
 
-test("data file contains exactly the 5 expected candidate locations", () => {
+test("data file contains exactly the 7 expected candidate locations", () => {
   const ids = Array.from(LOCATIONS.map((l) => l.id)).sort();
-  assert.deepStrictEqual(ids, ["belchinski-izvor", "hisarya", "malyovitsa", "sapareva-banya", "starosel"]);
+  assert.deepStrictEqual(ids, ["belchinski-izvor", "hisarya", "malyovitsa", "melnik", "sapareva-banya", "starosel", "ustina"]);
   const names = LOCATIONS.map((l) => l.name);
   assert.ok(names.some((n) => n.includes("Мальовица")), "Хотел „Мальовица“ present");
   assert.ok(names.some((n) => n.includes("Белчински извор")), "Белчински извор present");
   assert.ok(names.some((n) => n === "Хисаря"), "Хисаря present");
   assert.ok(names.some((n) => n.includes("Сапарева баня")), "Сапарева баня present");
   assert.ok(names.some((n) => n.includes("Старосел")), "Старосел present");
+  assert.ok(names.some((n) => n.includes("Мелник")), "Мелник present");
+  assert.ok(names.some((n) => n.includes("Устина")), "Устина present");
 });
 
 // ---------------------------------------------------------------------------
@@ -181,11 +183,11 @@ test("index.html is a Bulgarian page (lang=bg) with Bulgarian UI labels", () => 
   });
 });
 
-test("init renders 5 location cards with all key sections", () => {
+test("init renders 7 location cards with all key sections", () => {
   const w = fresh().window;
   const d = w.document;
   const cards = d.querySelectorAll("#location-cards .location-card");
-  assert.strictEqual(cards.length, 5);
+  assert.strictEqual(cards.length, 7);
   LOCATIONS.forEach((l, i) => {
     const card = cards[i];
     assert.strictEqual(card.getAttribute("data-id"), l.id);
@@ -203,7 +205,7 @@ test("each location card has an info block listing hotels, food and sights", () 
   const w = fresh().window;
   const d = w.document;
   const cards = d.querySelectorAll("#location-cards .location-card");
-  assert.strictEqual(d.querySelectorAll("#location-cards .loc-info").length, 5);
+  assert.strictEqual(d.querySelectorAll("#location-cards .loc-info").length, 7);
   LOCATIONS.forEach((l, i) => {
     const card = cards[i];
     const info = card.querySelector(".loc-info");
@@ -222,11 +224,11 @@ test("each location card has an info block listing hotels, food and sights", () 
   });
 });
 
-test("favorite picker renders 5 options", () => {
+test("favorite picker renders 7 options", () => {
   const w = fresh().window;
   const d = w.document;
   const opts = d.querySelectorAll("#favorite-picker .fav-opt");
-  assert.strictEqual(opts.length, 5);
+  assert.strictEqual(opts.length, 7);
   LOCATIONS.forEach((l, i) => {
     assert.strictEqual(opts[i].getAttribute("data-id"), l.id);
     assert.ok(opts[i].textContent.includes(l.name));
@@ -266,7 +268,7 @@ test("info button sits under the vote pane and toggles a panel listing everythin
   assert.ok(panel.classList.contains("hidden"), "panel hidden by default");
 
   const trips = panel.querySelectorAll(".se-location");
-  assert.strictEqual(trips.length, 5, "one block per location");
+  assert.strictEqual(trips.length, 7, "one block per location");
   LOCATIONS.forEach((l, i) => {
     assert.ok(trips[i].querySelector("h3").textContent.includes(l.name), `${l.id} heading`);
     const colTitles = Array.from(trips[i].querySelectorAll(".se-col h4")).map((h) => h.textContent);
