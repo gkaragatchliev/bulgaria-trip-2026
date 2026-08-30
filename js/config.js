@@ -13,6 +13,9 @@ var TRIP_CONFIG = {
   /** Traveler names */
   travelers: ["George", "Harue"],
 
+  /** Travelers' home city (shown in hero) */
+  home: { en: "Portland, Oregon", bg: "Портланд, Орегон" },
+
   /** Email address for activity proposals */
   email: "gkaragatchliev@gmail.com",
 

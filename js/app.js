@@ -56,12 +56,8 @@
     var travelersEl = $(".hero-travelers");
     if (titleEl) titleEl.textContent = t(TRIP.title);
     if (subEl) subEl.textContent = t(TRIP.subtitle);
-    if (kickerEl) kickerEl.textContent = state.lang === "bg"
-      ? t(TRIP_CONFIG.month) + " 2026 \u00B7 " + t(TRIP_CONFIG.country)
-      : t(TRIP_CONFIG.month) + " 2026 \u00B7 " + t(TRIP_CONFIG.country);
-    if (travelersEl) travelersEl.textContent = TRIP.travelers.join(" & ") + " \u00B7 " + (state.lang === "bg"
-      ? "Портланд, Орегон \u2192 " + t(TRIP_CONFIG.country)
-      : "Portland, Oregon \u2192 " + t(TRIP_CONFIG.country));
+    if (kickerEl) kickerEl.textContent = t(TRIP_CONFIG.month) + " 2026 \u00B7 " + t(TRIP_CONFIG.country);
+    if (travelersEl) travelersEl.textContent = TRIP.travelers.join(" & ") + " \u00B7 " + t(TRIP_CONFIG.home) + " \u2192 " + t(TRIP_CONFIG.country);
     splitHeroTitle();
   }
 
@@ -375,7 +371,7 @@
   /* ---- Calendar ---- */
   var DAY_NAMES_EN = ["Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday"];
   var DAY_NAMES_BG = ["Четвъртък","Петък","Събота","Неделя","Понеделник","Вторник","Сряда"];
-  var MONTH_BG = "октомври";
+  var MONTH_BG = TRIP_CONFIG.month.bg;
 
   function buildDayMap() {
     var days = [];
@@ -467,8 +463,8 @@
       var actVal = $("#plan-activity").value.trim();
       if (!dayVal || !whoVal || !actVal) return;
 
-      var subject = "Bulgaria Trip - Activity Proposal";
-      var body = "Hi George and Harue,\n\n" +
+      var subject = t(TRIP_CONFIG.title) + " - Activity Proposal";
+      var body = "Hi " + TRIP.travelers.join(" and ") + ",\n\n" +
         "I'd like to propose an activity:\n\n" +
         "Day: " + dayVal + "\n" +
         "Who: " + whoVal + "\n" +
