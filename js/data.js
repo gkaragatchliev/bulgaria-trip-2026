@@ -1,7 +1,7 @@
 var TRIP = {
-  title: { en: "Bulgaria Trip 2026", bg: "Почивка в България 2026" },
-  subtitle: { en: "October 8 - 26, 2026", bg: "8 - 26 октомври 2026" },
-  travelers: ["George", "Harue"],
+  title: TRIP_CONFIG.title,
+  subtitle: TRIP_CONFIG.subtitle,
+  travelers: TRIP_CONFIG.travelers,
   legs: [
     {
       id: "george-depart",

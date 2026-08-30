@@ -1,75 +1,94 @@
-# Bulgaria Trip 2026 -- PRD
+# Trip Site Template -- PRD
 
 ## Product
 Bilingual (EN/BG) static reference site for George and Harue's
-October 2026 Bulgaria trip. Itinerary display, accommodations, and
-things to see at each stop. No voting, no dynamic state. Deployed
-on GitHub Pages, shareable with family.
+October 2026 Bulgaria trip. Itinerary display, accommodations,
+things to see, drive routes, activity planning. Reusable template
+for future trips. Deployed on GitHub Pages, shareable with family.
+
+## Reusable Template
+To create a new trip site from this template:
+1. Copy the folder
+2. Edit `js/config.js` -- trip title, dates, travelers, email, country
+3. Edit `js/data.js` -- legs (flights, drives, accommodations, notes, things to see)
+4. Update `index.html` -- `<title>`, favicon
+5. Deploy to GitHub Pages
 
 ## Tech Stack
 - Vanilla HTML/CSS/JS (ES5, IIFE, var) -- no frameworks, no build step
-- Reuse: CSS theme (teal/ink), card layout, responsive grid,
-  node --test + jsdom tests, GitHub Pages deploy
-- Delete: all voting logic, old data model, old tests
+- Vendor libs: Splitting.js (hero title char animation), Rough.js (hand-drawn SVG map)
+- node --test + jsdom tests (33 tests), GitHub Pages deploy
+
+## Data Architecture
+- `js/config.js` -- trip-specific settings (title, dates, travelers, email, country, colors)
+- `js/data.js` -- legs array, references TRIP_CONFIG for metadata
+- `js/app.js` -- all rendering logic, language toggle, animations
 
 ## Language
 English/Bulgarian selector in top-right corner. Entire UI translated.
+Bulgarian uses 24-hour time for flights.
 
-## Itinerary
+## Features
 
-| Date | Day | What | Stay |
-|------|-----|------|------|
-| Oct 8 (Thu) | 1 | George departs PDX 7:30 PM (BA266) | -- |
-| Oct 9 (Fri) | 2 | Arrives LHR 1 PM, departs 5:55 PM (FB852), arrives SOF 11:15 PM | Premier Sofia Airport Hotel |
-| Oct 10-15 | 3-8 | George in Plovdiv with family | with family |
-| Oct 15 (Thu) | 8 | Harue departs PDX 7:30 PM (BA266) | -- |
-| Oct 16 (Fri) | 9 | Arrives LHR 1 PM, departs 5:55 PM (FB852), arrives SOF 11:15 PM | Premier Sofia Airport Hotel |
-| Oct 17 (Sat) | 10 | Drive to Melnik, meet family, wine tasting | Guest House Holiday (3BR apt) |
-| Oct 18 (Sun) | 11 | Melnik sightseeing, drive to Plovdiv | with family |
-| Oct 19-21 | 12-14 | Plovdiv -- time with family | with family |
-| Oct 22 (Wed) | 15 | Outing with father | TBD hotel |
-| Oct 23 (Thu) | 16 | Father's birthday | with family |
-| Oct 24 (Fri) | 17 | Dinner with Mom | with family |
-| Oct 25 (Sat) | 18 | Sofia, dinner with Krasi | TBD hotel (near SOF) |
-| Oct 26 (Sun) | 19 | Fly back: SOF 6:20 AM (FB851) -> LHR, LHR 1:35 PM (BA267) -> PDX 4:50 PM | -- |
+### Hero Section
+- Animated title (Splitting.js char-by-char fly-in)
+- Floating G/H particles (Caveat + Permanent Marker fonts, bright colors)
+- Language toggle (EN/BG), Plan Activity button
+- Travelers display, gradient background with warm radial accents
 
-## Flight Details
+### Timeline
+- Vertical cards with connector line and location-colored dots
+- Each card: date, day name, title, flight/drive/accommodation details
+- Giant day number watermarks (DM Serif Display, location-tinted)
+- Pull quotes on key legs (editorial serif, warm gradient backgrounds)
+- Expandable "things to see" with Google Maps links
+- Scroll-reveal animations (IntersectionObserver)
 
-### Outbound (same for George Oct 8 and Harue Oct 15)
-- BA266: PDX 7:30 PM -> LHR 1:00 PM (+1 day), 4h 55min, Economy
-- FB852: LHR 5:55 PM -> SOF 11:15 PM, 3h 20min, Economy Standard
+### Drive Routes
+- Google Maps directions + live traffic links
+- Country-qualified to avoid ambiguity (e.g. Melnik Bulgaria vs Czechia)
 
-### Return (Oct 26)
-- FB851: SOF 6:20 AM -> LHR 7:50 AM, 3h 30min, Economy Standard
-- BA267: LHR 1:35 PM -> PDX 4:50 PM, 10h 15min, Economy
+### Flight Display
+- Boarding-pass style cards with dashed border
+- 24-hour time conversion for Bulgarian language
 
-## Melnik Highlights (Oct 17-18)
-- Kordopulov House (wine cellar, 18th c. architecture, tasting)
-- Melnik Wine Museum (walkable, tastings)
-- Villa Melnik Winery (Top 50 world, ~4km, need car)
-- Zindan Cellar (Ottoman underground, atmospheric)
-- Melnik Earth Pyramids (sandstone formations, hiking, photos)
-- Rozhen Monastery (6km, frescoes)
-- Despot Slav's Fortress (medieval ruins, views)
-- St. Nicholas Church
+### Route Map
+- SVG map with Sofia, Plovdiv, Melnik dots
+- Hand-drawn style lines via Rough.js (static fallback when unavailable)
 
-## Page Sections
-1. Hero -- "Bulgaria Trip 2026" with date range
-2. Language selector (EN/BG) -- top right
-3. Timeline -- vertical cards, one per leg
-4. Each card: date, title, accommodation, notes, expandable "things to see"
-5. Footer
+### Plan Activity Feature
+- "Plan Activity" button in hero toggles calendar section
+- Calendar view: all 19 days color-coded (travel=blue, booked=yellow, free=green)
+- Activity proposal form: day selector (free days only), who, activity description
+- Pre-filled mailto: email to trip organizer
+
+### Design System
+- Typography: DM Serif Display (editorial serif) + Space Grotesk (technical grotesque)
+- Particles: Caveat (handwriting) + Permanent Marker (bold marker)
+- Colors: teal/ink palette, location accents (Sofia=teal, Plovdiv=indigo, Melnik=wine)
+- Card shadows, hover effects, slight rotation for tossed-on-desk feel
+- Print stylesheet
 
 ## Data Model
-Single TRIP object with legs[] array. Each leg has date, title (en/bg),
-accommodation, notes, thingsToSee. Flight details as nested object.
+- TRIP_CONFIG: title, subtitle, travelers, email, country, month, primary color
+- TRIP.legs[]: each leg has id, location, date, day, title, flight/flights, drive, accommodation, notes, thingsToSee, pullquote
+- Drive legs: { from, to, duration } for map + traffic links
+- All user-facing text: { en: "...", bg: "..." } bilingual objects
 
 ## Tests
+33 tests covering:
 - Itinerary renders all legs
 - Language toggle switches content
 - TBD placeholders display correctly
+- Flight details render
+- Drive legs render with map + traffic links
+- Pull quotes render
+- Day badges render
+- Activity form elements present
+- Calendar section hidden by default
 - Responsive layout at mobile breakpoints
 
 ## Deployment
 - GitHub Pages from main branch
-- Cache-busting query strings on CSS/JS
+- Cache-busting query strings on CSS/JS (bump on every change)
+- `vendor/` folder for third-party libs (committed, referenced locally)

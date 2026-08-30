@@ -5,25 +5,28 @@ conventions, pitfalls we've hit, and current state.
 
 ## What this repo is
 
-`Hotspring_BG` -- now **Bulgaria Trip 2026** -- a small **static site (no backend)**
-for George and Harue's October 2026 Bulgaria trip. Bilingual (EN/BG) with a
-language selector. Displays the itinerary, flights, accommodations, and things
-to see. Deployed on GitHub Pages.
+**Trip Site Template** -- reusable bilingual (EN/BG) static site for trips.
+Currently deployed as **Bulgaria Trip 2026** for George and Harue's
+October 2026 Bulgaria trip. Deployed on GitHub Pages.
+
+To create a new trip: copy folder, edit `js/config.js` + `js/data.js`, deploy.
 
 ## Tech stack and structure
 
 - Vanilla HTML/CSS/JS (ES5 style, IIFE, `var`). No frameworks, no build step.
 - `vendor/` -- third-party libraries, committed as minified files for offline dev.
   Reference locally (e.g. `vendor/splitting.min.js?v=N`). **Do not use CDN URLs.**
-- `index.html` -- page structure (hero with language selector, timeline, footer).
-  `<html lang="en">`, bilingual UI.
-- `css/style.css` -- styles (CSS custom properties, teal/ink palette, timeline cards).
-- `js/data.js` -- trip data: `TRIP` object with `legs[]` array. Each leg has
+- `index.html` -- page structure (hero with language selector, timeline, calendar, footer).
+- `css/style.css` -- styles (CSS custom properties, teal/ink palette, timeline cards, calendar grid).
+- `js/config.js` -- **trip-specific settings**: title, subtitle, travelers, email, country, month, colors. Edit for each new trip.
+- `js/data.js` -- trip legs: `TRIP` object with `legs[]` array. Each leg has
   `id`, `date`, `day` (en/bg), `title` (en/bg), `flight` or `flights`,
-  `accommodation`, `notes` (en/bg), `thingsToSee[]`. Edit this file to change itinerary.
-- `js/app.js` -- all logic in one IIFE: timeline rendering, language toggle,
-  XSS escaping. No localStorage, no dynamic state.
-- `tests/site.test.js` -- `node --test` + jsdom, **32 tests, all green**.
+  `drive`, `accommodation`, `notes` (en/bg), `thingsToSee[]`, `pullquote`.
+  Edit this file to change itinerary.
+- `js/app.js` -- all logic in one IIFE: timeline rendering, calendar rendering,
+  language toggle, activity proposal form, Splitting.js/Rough.js init,
+  scroll-reveal, progress bar, G/H particles, XSS escaping.
+- `tests/site.test.js` -- `node --test` + jsdom, **33 tests, all green**.
 - `package.json` -- script `npm test`, devDependency `jsdom`.
 
 ## Commands
@@ -39,8 +42,8 @@ to see. Deployed on GitHub Pages.
    replacement string, corrupting `$$` in `var $`. **Always use split/join,
    never `.replace()`**, when embedding source (see `buildScript()` in tests).
 2. **jsdom doesn't share top-level `const` across separate external `<script>` tags.**
-   Harness must merge `data.js` + `app.js` into one inline script and expose
-   internals via `window.__trip` before `DOMContentLoaded`.
+   Harness must merge scripts into one inline script and expose internals
+   via `window.__trip` before `DOMContentLoaded`.
 3. **`deepStrictEqual` fails across realms.** Arrays/objects created inside jsdom
    have different prototypes than Node ones. Compare with `Array.from()` or
    `JSON.stringify`, not `deepStrictEqual` on jsdom objects.
@@ -52,13 +55,24 @@ to see. Deployed on GitHub Pages.
    objects. The `t(obj)` helper picks the right language. Never hardcode a single
    language string -- always use the object form.
 6. **No `gh` CLI on this machine.** Use GitHub MCP tools (or plain `git push`).
+7. **SVG filters affect text.** `feTurbulence` + `feDisplacementMap` roughens
+   everything inside the element, not just edges. Keep filters on decorative
+   elements only, not content containers.
+8. **IntersectionObserver must re-observe after innerHTML replacement.**
+   Language toggle replaces timeline HTML; new `.reveal` elements need
+   re-observation. Store observer in module scope, call `observeReveals()`
+   after each `renderAll()`.
 
 ## Current state
 
 - 14 itinerary legs fully populated with real data.
-- Melnik legs have 5 things to see (Kordopulov House, Wine Museum, Earth Pyramids,
-  Rozhen Monastery, Despot Slav's Fortress, St. Nicholas Church, Villa Melnik).
-- Flights for George (Oct 8) and Harue (Oct 15) outbound, return Oct 26.
-- TBD placeholders for Oct 22 (outing with father) and Oct 25 (Sofia hotel).
+- Template system: `config.js` holds trip metadata, `data.js` holds legs.
+- Vendor libs: Splitting.js v1.1.0, Rough.js v4.6.6.
+- Drive legs (3): Sofia-Melnik, Melnik-Plovdiv, Plovdiv-Sofia with Google Maps + traffic links.
+- Pull quotes on Oct 17 (Melnik) and future legs.
+- Calendar view with Plan Activity feature (mailto: proposal form).
+- 24-hour time for Bulgarian flights.
+- Editorial typography: DM Serif Display + Space Grotesk.
+- G/H particles: Caveat + Permanent Marker fonts, bright saturated colors.
 - All UI bilingual with EN/BG toggle in top-right corner.
-- Repo for deploy: public, GitHub Pages.
+- Repo: https://github.com/gkaragatchliev/bulgaria-trip-2026

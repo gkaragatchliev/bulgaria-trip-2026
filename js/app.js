@@ -57,11 +57,11 @@
     if (titleEl) titleEl.textContent = t(TRIP.title);
     if (subEl) subEl.textContent = t(TRIP.subtitle);
     if (kickerEl) kickerEl.textContent = state.lang === "bg"
-      ? "Октомври 2026 \u00B7 България"
-      : "October 2026 \u00B7 Bulgaria";
+      ? t(TRIP_CONFIG.month) + " 2026 \u00B7 " + t(TRIP_CONFIG.country)
+      : t(TRIP_CONFIG.month) + " 2026 \u00B7 " + t(TRIP_CONFIG.country);
     if (travelersEl) travelersEl.textContent = TRIP.travelers.join(" & ") + " \u00B7 " + (state.lang === "bg"
-      ? "Портланд, Орегон \u2192 България"
-      : "Portland, Oregon \u2192 Bulgaria");
+      ? "Портланд, Орегон \u2192 " + t(TRIP_CONFIG.country)
+      : "Portland, Oregon \u2192 " + t(TRIP_CONFIG.country));
     splitHeroTitle();
   }
 
@@ -188,7 +188,7 @@
   }
 
   function directionsLink(drive) {
-    var country = state.lang === "bg" ? "България" : "Bulgaria";
+    var country = t(TRIP_CONFIG.country);
     var from = t(drive.from) + ", " + country;
     var to = t(drive.to) + ", " + country;
     return "https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(from) +
@@ -196,7 +196,7 @@
   }
 
   function trafficLink(drive) {
-    var country = state.lang === "bg" ? "България" : "Bulgaria";
+    var country = t(TRIP_CONFIG.country);
     var from = t(drive.from) + ", " + country;
     var to = t(drive.to) + ", " + country;
     return "https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(from) +
@@ -474,7 +474,7 @@
         "Who: " + whoVal + "\n" +
         "Activity: " + actVal + "\n\n" +
         "Let me know if this works!\n";
-      var mailto = "mailto:gkaragatchliev@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      var mailto = "mailto:" + TRIP_CONFIG.email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
       window.location.href = mailto;
     });
   }

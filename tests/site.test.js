@@ -15,6 +15,7 @@ const ROOT = path.join(__dirname, "..");
 // ---------------------------------------------------------------------------
 
 function buildScript() {
+  const config = fs.readFileSync(path.join(ROOT, "js", "config.js"), "utf8");
   const data = fs.readFileSync(path.join(ROOT, "js", "data.js"), "utf8");
   let app = fs.readFileSync(path.join(ROOT, "js", "app.js"), "utf8");
 
@@ -35,7 +36,7 @@ function buildScript() {
   app = app.split('  document.addEventListener("DOMContentLoaded", init);')
     .join(hook + '\n  document.addEventListener("DOMContentLoaded", init);');
 
-  return data + "\n" + app;
+  return config + "\n" + data + "\n" + app;
 }
 
 function makeDom() {
