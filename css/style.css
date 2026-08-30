@@ -200,6 +200,10 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
   border-radius: var(--radius);
   padding: 20px 22px;
   box-shadow: var(--shadow);
+  position: relative;
+}
+.timeline-card:nth-child(even) {
+  transform: none;
 }
 
 
@@ -533,12 +537,15 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
 
 /* ---------- Card hover polish ---------- */
 .timeline-card {
-  transition: border-color 0.15s, box-shadow 0.2s, transform 0.2s;
+  transition: filter 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .timeline-card:hover {
-  border-color: var(--teal-500);
-  box-shadow: 0 12px 36px rgba(11, 61, 58, 0.14);
-  transform: translateY(-2px);
+  filter: url(#rough-edge) brightness(1.02);
+  box-shadow:
+    2px 3px 0 #b8cec7,
+    4px 5px 0 #a8c2ba,
+    3px 4px 18px rgba(11, 61, 58, 0.25);
+  transform: rotate(0deg) translateY(-2px);
 }
 .tc-title {
   font-size: 1.15rem;
@@ -560,7 +567,7 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
   .timeline { padding-left: 0; }
   .timeline::before { display: none; }
   .timeline-card::before { display: none; }
-  .timeline-card { box-shadow: none; border-color: #ccc; border-left: none; break-inside: avoid; transform: none !important; }
+  .timeline-card { box-shadow: none; border: 1px solid #ccc; border-left: none; break-inside: avoid; transform: none !important; filter: none; }
   .route-map { display: none; }
   .footer { background: #fff; color: #555; }
 }

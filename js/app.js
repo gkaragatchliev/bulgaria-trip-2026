@@ -164,12 +164,23 @@
     return html;
   }
 
+  function to24h(str) {
+    return str.replace(/(\d{1,2}):(\d{2})\s*(AM|PM)/gi, function (_, h, min, ap) {
+      h = parseInt(h, 10);
+      if (ap.toUpperCase() === "PM" && h !== 12) h += 12;
+      if (ap.toUpperCase() === "AM" && h === 12) h = 0;
+      return (h < 10 ? "0" : "") + h + ":" + min;
+    });
+  }
+
   function renderFlight(f) {
     var html = '<div class="tc-flight">';
     html += '<span class="tc-label">' + (state.lang === "bg" ? "Полет" : "Flight") + '</span> ';
     html += '<strong>' + escapeHtml(f.airline) + ' ' + escapeHtml(f.number) + '</strong>';
     html += '<span class="tc-flight-detail"> ';
-    html += escapeHtml(f.depart) + ' \u2192 ' + escapeHtml(f.arrive);
+    var depart = state.lang === "bg" ? to24h(f.depart) : f.depart;
+    var arrive = state.lang === "bg" ? to24h(f.arrive) : f.arrive;
+    html += escapeHtml(depart) + ' \u2192 ' + escapeHtml(arrive);
     html += ' (' + escapeHtml(f.duration) + ')';
     html += '</span>';
     html += '</div>';
