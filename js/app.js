@@ -108,7 +108,8 @@
         html += '<span class="tc-detail"> ' + escapeHtml(t(leg.accommodation.details)) + '</span>';
       }
       if (!isTbd) {
-        html += ' <a class="tc-map" href="' + mapsLink(leg.accommodation.name) + '" target="_blank" rel="noopener">' + (state.lang === "bg" ? "\u043A\u0430\u0440\u0442\u0430" : "map") + '</a>';
+        var q = leg.accommodation.name + (leg.location ? ", " + t(leg.location) : "");
+        html += ' <a class="tc-map" href="' + mapsLink(q) + '" target="_blank" rel="noopener">' + (state.lang === "bg" ? "\u043A\u0430\u0440\u0442\u0430" : "map") + '</a>';
       }
       html += '</div>';
     }
@@ -125,7 +126,8 @@
         html += '<li>';
         html += '<strong>' + escapeHtml(t(thing.name)) + '</strong>';
         html += ' \u2014 ' + escapeHtml(t(thing.info));
-        html += ' <a class="tc-map" href="' + mapsLink(t(thing.name)) + '" target="_blank" rel="noopener">' + (state.lang === "bg" ? "\u043A\u0430\u0440\u0442\u0430" : "map") + '</a>';
+        var thingQ = t(thing.name) + (leg.location ? ", " + t(leg.location) : "");
+        html += ' <a class="tc-map" href="' + mapsLink(thingQ) + '" target="_blank" rel="noopener">' + (state.lang === "bg" ? "\u043A\u0430\u0440\u0442\u0430" : "map") + '</a>';
         html += '</li>';
       });
       html += '</ul>';
