@@ -372,6 +372,113 @@
     });
   }
 
+  /* ---- Calendar ---- */
+  var DAY_NAMES_EN = ["Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday"];
+  var DAY_NAMES_BG = ["Четвъртък","Петък","Събота","Неделя","Понеделник","Вторник","Сряда"];
+  var MONTH_BG = "октомври";
+
+  function buildDayMap() {
+    var days = [];
+    var legs = TRIP.legs;
+    for (var d = 8; d <= 26; d++) {
+      var entry = { num: d, date: "Oct " + d, status: "free", desc: "", leg: null };
+      for (var i = 0; i < legs.length; i++) {
+        var leg = legs[i];
+        var dateStr = leg.date;
+        var rangeMatch = dateStr.match(/Oct\s+(\d+)\s*-\s*(\d+)/);
+        if (rangeMatch) {
+          var from = parseInt(rangeMatch[1], 10);
+          var to = parseInt(rangeMatch[2], 10);
+          if (d >= from && d <= to) { entry.leg = leg; break; }
+        } else {
+          var singleMatch = dateStr.match(/Oct\s+(\d+)/);
+          if (singleMatch && parseInt(singleMatch[1], 10) === d) { entry.leg = leg; break; }
+        }
+      }
+      if (entry.leg) {
+        entry.desc = t(entry.leg.title);
+        if (entry.leg.flight || entry.leg.flights) entry.status = "travel";
+        else if (entry.leg.accommodation) entry.status = "family";
+        else entry.status = "free";
+      }
+      days.push(entry);
+    }
+    return days;
+  }
+
+  function renderCalendar() {
+    var cal = $("#calendar");
+    if (!cal) return;
+    var days = buildDayMap();
+    var isBg = state.lang === "bg";
+    var dayNames = isBg ? DAY_NAMES_BG : DAY_NAMES_EN;
+    cal.innerHTML = days.map(function (day) {
+      var dow = (day.num - 8) % 7;
+      var dayName = dayNames[dow];
+      var dateLabel = isBg ? day.num + " " + MONTH_BG : day.date;
+      var desc = day.desc || (isBg ? "Свободен ден" : "Free day");
+      return '<div class="cal-day ' + day.status + '">' +
+        '<span class="cal-day-date">' + dateLabel + ' (' + dayName + ')</span>' +
+        '<span class="cal-day-desc">' + escapeHtml(desc) + '</span>' +
+        '</div>';
+    }).join("");
+  }
+
+  function populateDaySelect() {
+    var sel = $("#plan-day");
+    if (!sel) return;
+    var days = buildDayMap();
+    var isBg = state.lang === "bg";
+    var dayNames = isBg ? DAY_NAMES_BG : DAY_NAMES_EN;
+    var opts = '<option value="">' + (isBg ? "Изберете ден..." : "Select a day...") + '</option>';
+    days.forEach(function (day) {
+      var dow = (day.num - 8) % 7;
+      var dayName = dayNames[dow];
+      var label = (isBg ? day.num + " " + MONTH_BG : day.date) + " - " + dayName;
+      var disabled = day.status !== "free" ? " disabled" : "";
+      var statusTag = day.status === "free" ? " [Free]" : day.status === "travel" ? " [Travel]" : " [Booked]";
+      opts += '<option value="' + day.date + '"' + disabled + '>' + label + statusTag + '</option>';
+    });
+    sel.innerHTML = opts;
+  }
+
+  function initCalendar() {
+    var toggleBtn = $("#plan-toggle");
+    var section = $("#calendar-section");
+    if (!toggleBtn || !section) return;
+
+    toggleBtn.addEventListener("click", function () {
+      var hidden = section.classList.contains("hidden");
+      section.classList.toggle("hidden", !hidden);
+      toggleBtn.classList.toggle("active", hidden);
+      if (hidden) {
+        renderCalendar();
+        populateDaySelect();
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    var form = $("#activity-form");
+    if (!form) return;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var dayVal = $("#plan-day").value;
+      var whoVal = $("#plan-who").value;
+      var actVal = $("#plan-activity").value.trim();
+      if (!dayVal || !whoVal || !actVal) return;
+
+      var subject = "Bulgaria Trip - Activity Proposal";
+      var body = "Hi George and Harue,\n\n" +
+        "I'd like to propose an activity:\n\n" +
+        "Day: " + dayVal + "\n" +
+        "Who: " + whoVal + "\n" +
+        "Activity: " + actVal + "\n\n" +
+        "Let me know if this works!\n";
+      var mailto = "mailto:gkaragatchliev@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      window.location.href = mailto;
+    });
+  }
+
   function init() {
     var langBtns = $$(".lang-btn");
     langBtns.forEach(function (btn) {
@@ -385,6 +492,7 @@
     initRouteMap();
     if (typeof IntersectionObserver !== "undefined") initScrollReveal();
     initProgressBar();
+    initCalendar();
 
     window.addEventListener("beforeprint", function () {
       $$(".tc-things").forEach(function (d) {

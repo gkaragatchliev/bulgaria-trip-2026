@@ -8,16 +8,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=DM+Serif+Display:ital@0;1&family=Permanent+Marker&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=13" />
+  <link rel="stylesheet" href="css/style.css?v=14" />
 </head>
 <body>
   <div class="progress-bar" aria-hidden="true"></div>
   <header class="hero">
     <canvas id="g-particles" class="g-canvas" aria-hidden="true"></canvas>
     <div class="hero-inner">
-      <div class="lang-bar">
-        <button type="button" class="lang-btn active" data-lang="en">EN</button>
-        <button type="button" class="lang-btn" data-lang="bg">BG</button>
+      <div class="hero-actions">
+        <div class="lang-bar">
+          <button type="button" class="lang-btn active" data-lang="en">EN</button>
+          <button type="button" class="lang-btn" data-lang="bg">BG</button>
+        </div>
+        <button type="button" id="plan-toggle" class="plan-toggle-btn">
+          <span class="plan-icon">&#9998;</span> <span class="plan-label">Plan Activity</span>
+        </button>
       </div>
       <p class="hero-kicker">October 2026 &middot; Bulgaria</p>
       <h1>Bulgaria Trip 2026</h1>
@@ -63,6 +68,46 @@
         <div id="timeline" class="timeline"></div>
       </div>
     </section>
+
+    <section id="calendar-section" class="section calendar-section hidden">
+      <div class="container">
+        <h2 class="section-title">
+          <span class="section-title-text">Trip Calendar</span>
+          <span class="section-title-bg" aria-hidden="true">CAL</span>
+        </h2>
+        <div class="calendar-legend">
+          <span class="legend-item"><span class="legend-dot legend-travel"></span> Travel</span>
+          <span class="legend-item"><span class="legend-dot legend-family"></span> Family / Booked</span>
+          <span class="legend-item"><span class="legend-dot legend-free"></span> Free</span>
+        </div>
+        <div id="calendar" class="calendar"></div>
+
+        <h3 class="form-title">Propose an Activity</h3>
+        <p class="form-subtitle">Pick a free day, suggest something fun. George and Harue will confirm.</p>
+        <form id="activity-form" class="activity-form">
+          <div class="form-row">
+            <label for="plan-day">Day</label>
+            <select id="plan-day" required>
+              <option value="">Select a day...</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="plan-who">Who</label>
+            <select id="plan-who" required>
+              <option value="">Who is this for?</option>
+              <option value="nephew">Nephew</option>
+              <option value="niece">Niece</option>
+              <option value="both">Both</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="plan-activity">Activity</label>
+            <input type="text" id="plan-activity" placeholder="e.g. Visit the zoo, go hiking, water park..." required />
+          </div>
+          <button type="submit" class="plan-submit-btn">Propose via Email</button>
+        </form>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -74,6 +119,6 @@
   <script src="vendor/splitting.min.js?v=8"></script>
   <script src="vendor/rough.min.js?v=8"></script>
   <script src="js/data.js?v=11"></script>
-  <script src="js/app.js?v=13"></script>
+  <script src="js/app.js?v=15"></script>
 </body>
 </html>
