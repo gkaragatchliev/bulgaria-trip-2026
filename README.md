@@ -1,70 +1,44 @@
-# Къде да пренощуваме? — Избор на хотел и местоположение (🇧🇬)
+# Bulgaria Trip 2026
 
-Малък статичен сайт (без сървър) за група хора, които заедно трябва да решат
-**къде да отседнат** при една-единствена дата. Няма избор на дати — гласува се
-само за **най-добрия хотел / местоположение**.
+A bilingual (EN/BG) static reference site for George and Harue's October 2026
+trip to Bulgaria. Displays the itinerary, accommodations, flights, and things
+to see at each stop. Deployed on GitHub Pages.
 
-- 7-те кратко листнати дестинации са описани в [`PROPOSAL.md`](PROPOSAL.md).
-- Всеки отваря сайта, гласува за любимата си дестинация, а панелът
-  „Хотели, храна и забележителности“ показва подробна информация за всяко място.
-
-## Изпълнение локално
+## Run locally
 
 ```bash
 python -m http.server 8000
-# след това отвори http://localhost:8000
+# then open http://localhost:8000
 ```
 
-## Изпълнение на тестовете
+## Run tests
 
 ```bash
 npm install
 npm test
 ```
 
-Тестовият пакет (`tests/site.test.js`) проверява целия сайт в симулиран
-браузър: всяка карта с дестинация, валидацията при гласуване,
-записване/изтриване на глас, обобщението и класацията, линковете за
-споделяне и XSS защитата.
+The test suite (`tests/site.test.js`) validates the site in a simulated browser:
+all legs render, language toggle works, flights display, TBD placeholders show,
+and Melnik sights expand.
 
-## Как работи гласуването (важно)
+## Structure
 
-Това е **статичен сайт на GitHub Pages** — няма сървър или база данни, затова
-гласовете се пазят в `localStorage` на всяко устройство. За да съберете
-отговорите на всички:
-
-1. Всяко домакинство отваря сайта на своето устройство и гласува.
-2. Натиска **„Копирай моя линк“** и изпраща линка на организатора
-   (текст / имейл / WhatsApp). Линкът съдържа гласа им.
-3. Организаторът отваря всеки линк на едно устройство — всеки глас се добавя
-   автоматично.
-4. След това резултатите показват общата картина. За да ги покажете на всички,
-   използвайте **„Копирай линк с всички гласове“** или просто споделете екрана.
-
-Данните живеят само в браузъра на всеки човек — никъде не се качва нищо.
-
-## Хостинг на GitHub Pages
-
-1. Създайте ново репозитори (частно или публично).
-2. Пушнете тези файлове (`index.html`, `css/`, `js/`, `PROPOSAL.md`,
-   `README.md`). Името на репозитото става част от URL-а, напр.
-   `hotspring-bg` → `https://ТВОЕТО_ИМЕ.github.io/hotspring-bg/`.
-3. В репозитото отидете на **Settings → Pages**.
-4. При **Branch** изберете `main` (и папка `/ (root)`), след това **Save**.
-5. Изчакайте ~1 минута. Сайтът е онлайн на показания URL.
-6. Изпратете URL-а на всички и започнете да гласувате!
-
-## Редактиране на опциите
-
-Дестинациите и подробностите за тях са в [`js/data.js`](js/data.js). Променете
-цена, добавете нов хотел или нова забележителност — не е нужен друг файл.
-
-## Файлове
-
-| Файл | Предназначение |
+| File | Purpose |
 |---|---|
-| `index.html` | Страницата (заглавна част, дестинации, форма за глас, резултати) |
-| `css/style.css` | Стилове |
-| `js/data.js` | 7-те дестинации + хотели/храна/забележителности |
-| `js/app.js` | Гласуване, резултати, линкове за споделяне |
-| `PROPOSAL.md` | Пълното предложение за 5-те дестинации |
+| `index.html` | Page structure (hero, timeline, footer) |
+| `css/style.css` | Styles (teal/ink palette, timeline cards) |
+| `js/data.js` | Trip data model (legs, flights, accommodations, sights) |
+| `js/app.js` | Timeline rendering, language toggle |
+| `PRD.md` | Product requirements document |
+| `tests/site.test.js` | 25 tests, all passing |
+
+## Editing the itinerary
+
+Trip details are in `js/data.js`. Edit the `TRIP` object to add/remove legs,
+update flights, or change accommodations. All text has `en` and `bg` variants.
+
+## Deploy
+
+Commit + push to `main`. GitHub Pages publishes automatically (~1 min).
+Use cache-busting query strings (`?v=N`) when changing CSS or JS.

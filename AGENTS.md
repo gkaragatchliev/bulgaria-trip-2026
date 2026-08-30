@@ -1,71 +1,62 @@
-# AGENTS.md — Контекст на проекта
+# AGENTS.md - Project Context
 
-Този файл се зарежда автоматично от opencode в началото на всяка сесия. Чете се
-първо: записва конвенциите, капаните, които сме срещали, и текущото състояние.
+This file is auto-loaded by opencode at the start of every session. Read first:
+conventions, pitfalls we've hit, and current state.
 
-## Какво е това репозитори
+## What this repo is
 
-`Hotspring_BG` — малък **статичен сайт (без backend)** на **български** за
-избор на хотел/местоположение за групова почивка с **една дата** (няма избор на
-дати). Гласува се за любима дестинация, а панелът „Хотели, храна и
-забележителности“ е **само информация**. Деплой: GitHub Pages.
+`Hotspring_BG` -- now **Bulgaria Trip 2026** -- a small **static site (no backend)**
+for George and Harue's October 2026 Bulgaria trip. Bilingual (EN/BG) with a
+language selector. Displays the itinerary, flights, accommodations, and things
+to see. Deployed on GitHub Pages.
 
-## Технологичен стек и структура
+## Tech stack and structure
 
-- Vanilla HTML/CSS/JS (стил ES5, IIFE, `var`). Без фреймуърци, без build стъпка.
-- `index.html` — структура на страницата (заглавна част, карти с дестинации,
-  форма за гласуване, резултати). Атрибут `<html lang="bg">`, целият текст на български.
-- `css/style.css` — стилове (CSS custom properties, палитра теал/мастило).
-- `js/data.js` — само данни: `LOCATIONS` (7 дестинации, всяка с `hotels[]`,
-  `eat[]` и `see[]` — **само информация, не се гласува за тях**) и
-  `STORAGE_KEY`. Редактирането на този файл е начинът за промяна на опциите.
-- `js/app.js` — цялата логика в един IIFE: рендиране, състояние
-  (`state.votes` в localStorage), обобщение/класация, unicode-safe base64
-  encode/decode за линковете за споделяне, XSS ескейпване.
-- `tests/site.test.js` — `node --test` + jsdom, **33 теста, всички зелени**.
-- `package.json` — скрипт `npm test` (пуска `node --test tests/*.test.js`),
-  devDependency `jsdom`.
+- Vanilla HTML/CSS/JS (ES5 style, IIFE, `var`). No frameworks, no build step.
+- `index.html` -- page structure (hero with language selector, timeline, footer).
+  `<html lang="en">`, bilingual UI.
+- `css/style.css` -- styles (CSS custom properties, teal/ink palette, timeline cards).
+- `js/data.js` -- trip data: `TRIP` object with `legs[]` array. Each leg has
+  `id`, `date`, `day` (en/bg), `title` (en/bg), `flight` or `flights`,
+  `accommodation`, `notes` (en/bg), `thingsToSee[]`. Edit this file to change itinerary.
+- `js/app.js` -- all logic in one IIFE: timeline rendering, language toggle,
+  XSS escaping. No localStorage, no dynamic state.
+- `tests/site.test.js` -- `node --test` + jsdom, **25 tests, all green**.
+- `package.json` -- script `npm test`, devDependency `jsdom`.
 
-## Команди
+## Commands
 
-- Тестове: `npm test`
-- Локално: `python -m http.server 8000` → `http://localhost:8000`
-- Деплой: commit + `git push origin main`; GitHub Pages го публикува (~1 мин).
+- Tests: `npm test`
+- Local: `python -m http.server 8000` then `http://localhost:8000`
+- Deploy: commit + `git push origin main`; GitHub Pages publishes (~1 min).
 
-## Мъдри уроци (НЕ повтаряй тези грешки)
+## Learned lessons (DO NOT repeat these mistakes)
 
-1. **`String.prototype.replace` тълкува `$` в replacement string** — `$$`,
-   `$&`, `$1` и т.н. Тестовият harness първоначално подаваше сорса на приложението
-   като replacement string, което развали `$$` в `var $`. **Винаги снадявай със
-   `split()/join()`, никога с `.replace()`**, когато вграждаш сорс (виж
-   `buildScript()` в теста).
-2. **jsdom не споделя top-level `const` между отделни външни `<script>` тагове.**
-   Harness-ът трябва да слее `data.js` + `app.js` в един inline script и да
-   експонира интерните неща чрез `window.__hot` преди `DOMContentLoaded`.
-3. **`deepStrictEqual` се проваля между realm-ове.** Масиви/обекти, създадени
-   вътре в jsdom, имат различен прототип от тези в Node. Сравнявай с
-   `Array.from(...)` или `JSON.stringify`, не с `deepStrictEqual` върху jsdom
-   обекти.
-4. **Cross-realm масив:** обвивай с `Array.from()` и при проверки върху
-   `state.votes`.
-5. **Браузърният кеш на GitHub Pages.** Потребители виждаха нов HTML с остарял
-   JS. Решено с cache-busting query strings: `css/style.css?v=N`,
-   `js/data.js?v=N`, `js/app.js?v=N`. **Увеличавай версията при всяка промяна**
-   на тези файлове. Ако потребител каже „бутонът не прави нищо“ — първо
-   подозирай кеша → хард рефреш (Ctrl+F5).
-6. **Хотели/храна/забележителности са само информация.** Рендират се като
-   сгънат `<details class="loc-info">` във всяка карта И в отделен панел,
-   включван от бутона „🏨 Хотели, храна и забележителности (само информация)“
-   под панела за гласуване. Никога не ги прави гласуваеми.
-7. **Няма `gh` CLI на тази машина.** Използвай GitHub MCP инструментите
-   (или обикновен `git push`).
+1. **`String.prototype.replace` interprets `$` in replacement strings** --
+   `$$`, `$&`, `$1`, etc. The test harness initially passed app source as a
+   replacement string, corrupting `$$` in `var $`. **Always use split/join,
+   never `.replace()`**, when embedding source (see `buildScript()` in tests).
+2. **jsdom doesn't share top-level `const` across separate external `<script>` tags.**
+   Harness must merge `data.js` + `app.js` into one inline script and expose
+   internals via `window.__trip` before `DOMContentLoaded`.
+3. **`deepStrictEqual` fails across realms.** Arrays/objects created inside jsdom
+   have different prototypes than Node ones. Compare with `Array.from()` or
+   `JSON.stringify`, not `deepStrictEqual` on jsdom objects.
+4. **GitHub Pages browser cache.** Users saw new HTML with stale JS. Solved with
+   cache-busting query strings: `css/style.css?v=N`, `js/data.js?v=N`,
+   `js/app.js?v=N`. **Bump version on every change** to these files.
+   If user says "button does nothing" -- suspect cache first -> hard refresh (Ctrl+F5).
+5. **Bilingual data model.** All user-facing text has `{ en: "...", bg: "..." }`
+   objects. The `t(obj)` helper picks the right language. Never hardcode a single
+   language string -- always use the object form.
+6. **No `gh` CLI on this machine.** Use GitHub MCP tools (or plain `git push`).
 
-## Текущо състояние
+## Current state
 
-- Всички 7 дестинации са заредени с реално съдържание: Хотел „Мальовица“,
-  СПА Комплекс „Белчински извор“, Хисаря, Сапарева баня, Старосел, Мелник,
-  Устина. Мелник и Устина са винен акцент (любителите на вино + джакузи).
-- В `hotels[]` на Мелник и Устина първи стоят вариантите с джакузи/топли
-  басейни: Комплекс „Рожена“ (Мелник) и Парк и СПА хотел „Марково“ (Устина).
-- Целият UI е на български. Датата е една — няма избор на дати/наличности.
-- Репото за деплой: публично, GitHub Pages.
+- 14 itinerary legs fully populated with real data.
+- Melnik legs have 5 things to see (Kordopulov House, Wine Museum, Earth Pyramids,
+  Rozhen Monastery, Despot Slav's Fortress, St. Nicholas Church, Villa Melnik).
+- Flights for George (Oct 8) and Harue (Oct 15) outbound, return Oct 26.
+- TBD placeholders for Oct 22 (outing with father) and Oct 25 (Sofia hotel).
+- All UI bilingual with EN/BG toggle in top-right corner.
+- Repo for deploy: public, GitHub Pages.
