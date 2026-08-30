@@ -35,10 +35,18 @@
     });
   }
 
+  var revealObserver;
+
+  function observeReveals() {
+    if (!revealObserver) return;
+    $$(".reveal").forEach(function (el) { revealObserver.observe(el); });
+  }
+
   function renderAll() {
     renderHero();
     renderOverview();
     renderTimeline();
+    observeReveals();
   }
 
   function renderHero() {
@@ -54,6 +62,13 @@
     if (travelersEl) travelersEl.textContent = TRIP.travelers.join(" & ") + " \u00B7 " + (state.lang === "bg"
       ? "Портланд, Орегон \u2192 България"
       : "Portland, Oregon \u2192 Bulgaria");
+    splitHeroTitle();
+  }
+
+  function splitHeroTitle() {
+    var titleEl = $(".hero h1");
+    if (!titleEl || typeof Splitting === "undefined") return;
+    Splitting({ target: titleEl, by: "chars", force: true });
   }
 
   function mapsLink(q) {
@@ -87,7 +102,7 @@
   function renderLeg(leg, idx) {
     var locKey = leg.location ? leg.location.en.toLowerCase().replace(/\s+/g, "") : "transit";
     var dayNum = idx + 1;
-    var html = '<div class="timeline-card reveal" data-location="' + escapeHtml(locKey) + '">';
+    var html = '<div class="timeline-card reveal" data-location="' + escapeHtml(locKey) + '" data-day-num="' + dayNum + '">';
     html += '<span class="tc-day-badge">Day ' + dayNum + '</span>';
     html += '<div class="tc-header">';
     html += '<span class="tc-date">' + escapeHtml(leg.date) + '</span>';
@@ -100,6 +115,10 @@
     }
     if (leg.flights) {
       leg.flights.forEach(function (f) { html += renderFlight(f); });
+    }
+
+    if (leg.drive) {
+      html += renderDrive(leg.drive);
     }
 
     if (leg.accommodation) {
@@ -119,6 +138,10 @@
 
     if (leg.notes) {
       html += '<p class="tc-notes">' + escapeHtml(t(leg.notes)) + '</p>';
+    }
+
+    if (leg.pullquote) {
+      html += '<blockquote class="tc-pullquote">' + escapeHtml(t(leg.pullquote)) + '</blockquote>';
     }
 
     if (leg.thingsToSee && leg.thingsToSee.length > 0) {
@@ -153,6 +176,37 @@
     return html;
   }
 
+  function directionsLink(drive) {
+    var country = state.lang === "bg" ? "България" : "Bulgaria";
+    var from = t(drive.from) + ", " + country;
+    var to = t(drive.to) + ", " + country;
+    return "https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(from) +
+      "&destination=" + encodeURIComponent(to);
+  }
+
+  function trafficLink(drive) {
+    var country = state.lang === "bg" ? "България" : "Bulgaria";
+    var from = t(drive.from) + ", " + country;
+    var to = t(drive.to) + ", " + country;
+    return "https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(from) +
+      "&destination=" + encodeURIComponent(to) + "&traffic=1";
+  }
+
+  function renderDrive(drive) {
+    var html = '<div class="tc-drive">';
+    html += '<span class="tc-label">' + (state.lang === "bg" ? "Пътуване" : "Drive") + '</span> ';
+    html += '<strong>' + escapeHtml(t(drive.from)) + ' \u2192 ' + escapeHtml(t(drive.to)) + '</strong>';
+    if (drive.duration) {
+      html += '<span class="tc-drive-detail"> (' + escapeHtml(drive.duration) + ')</span>';
+    }
+    html += ' <a class="tc-map" href="' + directionsLink(drive) + '" target="_blank" rel="noopener">' +
+      (state.lang === "bg" ? "маршрут" : "map") + '</a>';
+    html += ' <a class="tc-map" href="' + trafficLink(drive) + '" target="_blank" rel="noopener">' +
+      (state.lang === "bg" ? "пътна обстановка" : "road conditions") + '</a>';
+    html += '</div>';
+    return html;
+  }
+
   function initGParticles() {
     var canvas = document.getElementById("g-particles");
     if (!canvas) return;
@@ -161,20 +215,22 @@
     var particles = [];
     var letters = ["G", "H"];
     var colors = [
-      "rgba(255,255,255,",
-      "rgba(185,232,222,",
-      "rgba(252,213,102,",
-      "rgba(167,220,210,",
-      "rgba(255,180,130,",
-      "rgba(180,210,240,",
-      "rgba(210,180,255,",
-      "rgba(255,200,200,",
-      "rgba(200,240,200,",
-      "rgba(240,220,180,",
-      "rgba(180,230,230,",
-      "rgba(220,200,230,"
+      "#ff6b9d",
+      "#ffd93d",
+      "#6bcb77",
+      "#4d96ff",
+      "#ff922b",
+      "#cc5de8",
+      "#20c997",
+      "#ff8787",
+      "#748ffc",
+      "#f06595"
     ];
-    var count = 22;
+    var fonts = [
+      "'Caveat', cursive",
+      "'Permanent Marker', cursive"
+    ];
+    var count = 18;
     var raf;
 
     function resize() {
@@ -194,14 +250,15 @@
       return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.3 - 0.05,
-        size: 20 + Math.random() * 50,
-        opacity: 0.06 + Math.random() * 0.14,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.25 - 0.04,
+        size: 36 + Math.random() * 56,
+        opacity: 0.18 + Math.random() * 0.22,
         rotation: Math.random() * Math.PI * 2,
-        spin: (Math.random() - 0.5) * 0.006,
+        spin: (Math.random() - 0.5) * 0.005,
         letter: l,
-        color: c
+        color: c,
+        font: fonts[Math.floor(Math.random() * fonts.length)]
       };
     }
 
@@ -225,8 +282,9 @@
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rotation);
-        ctx.font = "800 " + p.size + "px Inter, system-ui, sans-serif";
-        ctx.fillStyle = p.color + p.opacity + ")";
+        ctx.globalAlpha = p.opacity;
+        ctx.font = "800 " + p.size + "px " + p.font;
+        ctx.fillStyle = p.color;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(p.letter, 0, 0);
@@ -242,16 +300,54 @@
     draw();
   }
 
+  function initRouteMap() {
+    var svg = document.getElementById("route-map");
+    if (!svg || typeof rough === "undefined") return;
+    var rc = rough.svg(svg);
+    var lines = svg.querySelectorAll(".static-line");
+    var dots = svg.querySelectorAll(".static-dot");
+    var i;
+    for (i = 0; i < lines.length; i++) lines[i].remove();
+    for (i = 0; i < dots.length; i++) dots[i].remove();
+
+    var pts = {
+      sofia: [130, 120],
+      plovdiv: [380, 195],
+      melnik: [155, 248]
+    };
+    var colors = {
+      sofia: "#14766d",
+      plovdiv: "#4f46e5",
+      melnik: "#9f1239"
+    };
+
+    svg.appendChild(rc.line(pts.sofia[0], pts.sofia[1], pts.plovdiv[0], pts.plovdiv[1], {
+      stroke: colors.sofia, strokeWidth: 2, roughness: 1.3, bowing: 2, strokeLineDash: [6, 4]
+    }));
+    svg.appendChild(rc.line(pts.sofia[0], pts.sofia[1], pts.melnik[0], pts.melnik[1], {
+      stroke: colors.melnik, strokeWidth: 2, roughness: 1.3, bowing: 2, strokeLineDash: [6, 4]
+    }));
+
+    ["sofia", "plovdiv", "melnik"].forEach(function (key) {
+      var c = pts[key];
+      var dot = rc.circle(c[0], c[1], 16, {
+        stroke: colors[key], fill: colors[key], fillStyle: "solid", roughness: 1.4, bowing: 1.5
+      });
+      dot.setAttribute("filter", "url(#glow)");
+      svg.appendChild(dot);
+    });
+  }
+
   function initScrollReveal() {
-    var observer = new IntersectionObserver(function (entries) {
+    revealObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add("reveal-visible");
-          observer.unobserve(entry.target);
+          revealObserver.unobserve(entry.target);
         }
       });
     }, { threshold: 0.1 });
-    $$(".reveal").forEach(function (el) { observer.observe(el); });
+    observeReveals();
   }
 
   function initProgressBar() {
@@ -275,6 +371,7 @@
     renderAll();
     syncLangUI();
     initGParticles();
+    initRouteMap();
     if (typeof IntersectionObserver !== "undefined") initScrollReveal();
     initProgressBar();
 

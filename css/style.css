@@ -21,6 +21,9 @@
   --loc-plovdiv: #4f46e5;
   --loc-melnik: #9f1239;
   --loc-transit: #6b7280;
+  --pop-pink: #ff6b9d;
+  --pop-coral: #ff922b;
+  --pop-gold: #ffd93d;
 }
 
 * { box-sizing: border-box; }
@@ -28,7 +31,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   color: var(--ink);
   background: var(--sage-50);
   line-height: 1.55;
@@ -96,7 +99,26 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
   color: #bce8df;
   margin: 0 0 14px;
 }
-.hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 14px; font-weight: 800; }
+.hero h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  margin: 0 0 14px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.hero h1 .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em) rotate(4deg);
+  animation: charIn 0.6s cubic-bezier(0.2, 0.7, 0.3, 1.2) forwards;
+  animation-delay: calc(var(--char-index) * 35ms + 120ms);
+}
+@keyframes charIn {
+  to { opacity: 1; transform: translateY(0) rotate(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 .char { opacity: 1; transform: none; animation: none; }
+}
 .hero-sub { font-size: 1.05rem; color: #dff1ee; margin: 0 auto 26px; max-width: 640px; }
 .hero-travelers {
   font-size: 0.95rem;
@@ -201,9 +223,12 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
 }
 .tc-title {
   margin: 0 0 10px;
-  font-size: 1.1rem;
-  font-weight: 800;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 400;
   color: var(--teal-900);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 /* Flight block */
@@ -254,6 +279,24 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
   border-radius: 10px;
   padding: 8px 12px;
   margin-bottom: 8px;
+}
+
+/* Drive block */
+.tc-drive {
+  background: #eef4fb;
+  border: 1px solid #c9dbf0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+.tc-drive .tc-label {
+  display: block;
+  margin-bottom: 2px;
+}
+.tc-drive-detail {
+  color: var(--muted);
+  font-size: 0.85rem;
 }
 
 /* Notes */
@@ -369,6 +412,48 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
 .timeline-card[data-location="plovdiv"] { border-left: 3px solid var(--loc-plovdiv); }
 .timeline-card[data-location="melnik"] { border-left: 3px solid var(--loc-melnik); }
 .timeline-card[data-location="transit"] { border-left: 3px solid var(--loc-transit); }
+
+/* ---------- Giant day number watermark ---------- */
+.timeline-card::after {
+  content: attr(data-day-num);
+  position: absolute;
+  top: -18px;
+  right: 12px;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 6rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--border);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+.timeline-card[data-location="sofia"]::after { color: var(--loc-sofia); opacity: 0.12; }
+.timeline-card[data-location="plovdiv"]::after { color: var(--loc-plovdiv); opacity: 0.12; }
+.timeline-card[data-location="melnik"]::after { color: var(--loc-melnik); opacity: 0.12; }
+.timeline-card[data-location="transit"]::after { color: var(--loc-transit); opacity: 0.10; }
+
+/* ---------- Pull quote ---------- */
+.tc-pullquote {
+  margin: 12px 0 4px;
+  padding: 14px 18px;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--teal-700);
+  border-left: 3px solid var(--pop-coral);
+  background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+  border-radius: 0 10px 10px 0;
+  line-height: 1.5;
+}
+.timeline-card[data-location="melnik"] .tc-pullquote {
+  border-left-color: var(--loc-melnik);
+  background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+}
+.timeline-card[data-location="plovdiv"] .tc-pullquote {
+  border-left-color: var(--loc-plovdiv);
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+}
 
 /* ---------- Boarding-pass flight cards ---------- */
 .tc-flight {

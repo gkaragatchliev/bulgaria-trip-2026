@@ -32,14 +32,6 @@ var TRIP = {
       title: { en: "George arrives in Sofia", bg: "Георги пристига в София" },
       flights: [
         {
-          airline: "British Airways",
-          number: "BA266",
-          depart: "PDX 7:30 PM (previous day)",
-          arrive: "LHR 1:00 PM",
-          duration: "4h 55min",
-          cabin: "Economy"
-        },
-        {
           airline: "Bulgaria Air",
           number: "FB852",
           depart: "LHR 5:55 PM",
@@ -101,14 +93,6 @@ var TRIP = {
       title: { en: "Harue arrives in Sofia", bg: "Харуе пристига в София" },
       flights: [
         {
-          airline: "British Airways",
-          number: "BA266",
-          depart: "PDX 7:30 PM (previous day)",
-          arrive: "LHR 1:00 PM",
-          duration: "4h 55min",
-          cabin: "Economy"
-        },
-        {
           airline: "Bulgaria Air",
           number: "FB852",
           depart: "LHR 5:55 PM",
@@ -134,6 +118,7 @@ var TRIP = {
       day: { en: "Saturday", bg: "Събота" },
       title: { en: "Sofia to Melnik -- meet family, wine", bg: "София до Мелник -- среща със семейството, вино" },
       flight: null,
+      drive: { from: { en: "Sofia", bg: "София" }, to: { en: "Melnik", bg: "Мелник" }, duration: "2h 45min" },
       accommodation: {
         name: "Guest House Holiday",
         details: { en: "3-bedroom apartment in Melnik. Stay with family.", bg: "3-стаен апартамент в Мелник. Настаняване със семейството." }
@@ -141,6 +126,10 @@ var TRIP = {
       notes: {
         en: "Drive from Sofia to Melnik (approx. 2h 45min). Meet family. Try local Melnik wine.",
         bg: "Пътуване от София до Мелник (около 2ч 45мин). Среща със семейството. Опит на местното мелнишко вино."
+      },
+      pullquote: {
+        en: "Melnik is Bulgaria's smallest town, tucked in a valley of sand pyramids and vineyards.",
+        bg: "Мелник е най-малкият град в България, скътан в долина от пясъчни пирамиди и лозя."
       },
       thingsToSee: [
         {
@@ -164,12 +153,17 @@ var TRIP = {
       day: { en: "Sunday", bg: "Неделя" },
       title: { en: "Melnik sightseeing, drive to Plovdiv", bg: "Разглеждане на Мелник, пътуване до Пловдив" },
       flight: null,
+      drive: { from: { en: "Melnik", bg: "Мелник" }, to: { en: "Plovdiv", bg: "Пловдив" }, duration: "2h" },
       accommodation: null,
       notes: {
-        en: "See the sights in Melnik, then drive to Plovdiv (approx. 2h). Stay with family.",
-        bg: "Разглеждане на забележителностите в Мелник, след това пътуване до Пловдив (около 2ч). Настаняване при семейството."
+        en: "See the sights in Melnik, stop at Rila Monastery on the way, then drive to Plovdiv (approx. 2h). Stay with family.",
+        bg: "Разглеждане на забележителностите в Мелник, спирка в Рилския манастир по пътя, след това пътуване до Пловдив (около 2ч). Настаняване при семейството."
       },
       thingsToSee: [
+        {
+          name: { en: "Rila Monastery", bg: "Рилски манастир" },
+          info: { en: "UNESCO World Heritage, on the route toward Sofia. Bulgaria's largest monastery, founded in the 10th century, famous for its 19th-century frescoes and Hrelyo's Tower.", bg: "Обект на ЮНЕСКО, по пътя към София. Най-големият манастир в България, основан през 10 век, известен с фреските си от 19 век и Хрельовата кула." }
+        },
         {
           name: { en: "Melnik Earth Pyramids", bg: "Мелнишки пирамиди" },
           info: { en: "Surreal sandstone rock formations surrounding the town. Great for photos and hiking.", bg: "Невероятни пясъчни скални образувания около града. Идеални за снимки и преходи." }
@@ -258,6 +252,7 @@ var TRIP = {
       day: { en: "Saturday", bg: "Събота" },
       title: { en: "Sofia -- dinner with Krasi", bg: "София -- вечеря с Краси" },
       flight: null,
+      drive: { from: { en: "Plovdiv", bg: "Пловдив" }, to: { en: "Sofia", bg: "София" }, duration: "2h" },
       accommodation: {
         name: "TBD (near SOF airport)",
         details: { en: "Hotel near Sofia airport for early morning flight.", bg: "Хотел край летище София за ранен полет." }

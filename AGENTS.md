@@ -13,6 +13,8 @@ to see. Deployed on GitHub Pages.
 ## Tech stack and structure
 
 - Vanilla HTML/CSS/JS (ES5 style, IIFE, `var`). No frameworks, no build step.
+- `vendor/` -- third-party libraries, committed as minified files for offline dev.
+  Reference locally (e.g. `vendor/splitting.min.js?v=N`). **Do not use CDN URLs.**
 - `index.html` -- page structure (hero with language selector, timeline, footer).
   `<html lang="en">`, bilingual UI.
 - `css/style.css` -- styles (CSS custom properties, teal/ink palette, timeline cards).
@@ -21,7 +23,7 @@ to see. Deployed on GitHub Pages.
   `accommodation`, `notes` (en/bg), `thingsToSee[]`. Edit this file to change itinerary.
 - `js/app.js` -- all logic in one IIFE: timeline rendering, language toggle,
   XSS escaping. No localStorage, no dynamic state.
-- `tests/site.test.js` -- `node --test` + jsdom, **25 tests, all green**.
+- `tests/site.test.js` -- `node --test` + jsdom, **32 tests, all green**.
 - `package.json` -- script `npm test`, devDependency `jsdom`.
 
 ## Commands

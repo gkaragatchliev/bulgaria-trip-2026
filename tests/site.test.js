@@ -168,7 +168,6 @@ test("flight details render for legs with flights", () => {
   const card = Array.from(cards).find((c) => c.querySelector(".tc-title").textContent.includes(georgeArrive.title.en));
   const flights = card.querySelectorAll(".tc-flight");
   assert.ok(flights.length >= 1, "flight blocks rendered");
-  assert.ok(card.textContent.includes("BA266"), "BA266 shown");
   assert.ok(card.textContent.includes("FB852"), "FB852 shown");
 });
 
@@ -368,6 +367,21 @@ test("thingsToSee entries include a Google Maps link", () => {
   const links = d.querySelectorAll(".tc-things-list .tc-map");
   assert.ok(links.length >= 5, "Melnik sights have map links");
   links.forEach((a) => assert.ok(a.getAttribute("href").indexOf("google.com/maps") !== -1));
+});
+
+test("drive legs render a route block with map and traffic links", () => {
+  const w = fresh().window;
+  const d = w.document;
+  const driveBlocks = d.querySelectorAll(".tc-drive");
+  const driveLegs = w.__trip.TRIP.legs.filter((l) => l.drive);
+  assert.strictEqual(driveBlocks.length, driveLegs.length, "one drive block per drive leg");
+
+  driveBlocks.forEach((block) => {
+    const links = block.querySelectorAll(".tc-map");
+    assert.strictEqual(links.length, 2, "map + road conditions links");
+    links.forEach((a) => assert.ok(a.getAttribute("href").indexOf("google.com/maps") !== -1));
+    assert.ok(/Sofia|Melnik|Plovdiv/.test(block.textContent), "cities shown");
+  });
 });
 
 test("hero shows travelers line", () => {
