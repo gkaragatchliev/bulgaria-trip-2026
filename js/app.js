@@ -431,7 +431,7 @@
     days.forEach(function (day) {
       var dateLabel = isBg ? day.num + " " + MONTH_BG : "Oct " + day.num;
       var desc = day.desc || (isBg ? "Свободен ден" : "Free day");
-      var status = day.leg ? (day.status === "travel" ? "planned" : "booked") : "free";
+      var status = day.status === "travel" ? "planned" : day.status;
       html += '<div class="cal-cell cal-day ' + status + '">' +
         '<span class="cal-day-date">' + dateLabel + '</span>' +
         '<span class="cal-day-desc">' + escapeHtml(desc) + '</span>' +
