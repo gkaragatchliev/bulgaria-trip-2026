@@ -108,7 +108,7 @@ test("TBD accommodations are present for correct legs", () => {
   const w = fresh().window;
   const legs = w.__trip.TRIP.legs;
   const tbdLegs = legs.filter((l) => l.accommodation && l.accommodation.name.includes("TBD"));
-  assert.ok(tbdLegs.length >= 2, "at least 2 TBD accommodations");
+  assert.ok(tbdLegs.length >= 1, "at least 1 TBD accommodation");
   tbdLegs.forEach((l) => {
     assert.ok(l.accommodation.name.includes("TBD"), `${l.id} has TBD`);
   });
@@ -164,9 +164,9 @@ test("timeline card shows date, day, and title in English", () => {
 
 test("flight details render for legs with flights", () => {
   const w = fresh().window;
-  const georgeArrive = w.__trip.TRIP.legs.find((l) => l.id === "george-arrive-sofia");
+  const georgeDepart = w.__trip.TRIP.legs.find((l) => l.id === "george-depart");
   const cards = w.document.querySelectorAll("#timeline .timeline-card");
-  const card = Array.from(cards).find((c) => c.querySelector(".tc-title").textContent.includes(georgeArrive.title.en));
+  const card = Array.from(cards).find((c) => c.querySelector(".tc-title").textContent.includes(georgeDepart.title.en));
   const flights = card.querySelectorAll(".tc-flight");
   assert.ok(flights.length >= 1, "flight blocks rendered");
   assert.ok(card.textContent.includes("FB852"), "FB852 shown");
@@ -184,7 +184,7 @@ test("TBD accommodation renders", () => {
   const w = fresh().window;
   const cards = w.document.querySelectorAll("#timeline .timeline-card");
   const tbdCards = Array.from(cards).filter((c) => c.textContent.includes("TBD"));
-  assert.ok(tbdCards.length >= 2, "at least 2 TBD cards");
+  assert.ok(tbdCards.length >= 1, "at least 1 TBD card");
 });
 
 test("thingsToSee expandable section renders for Melnik legs", () => {
@@ -356,7 +356,7 @@ test("TBD accommodations get the is-tbd marker and no map link", () => {
   const w = fresh().window;
   const d = w.document;
   const tbd = Array.from(d.querySelectorAll(".tc-accommodation.is-tbd"));
-  assert.ok(tbd.length >= 2, "at least 2 TBD-marked stays");
+  assert.ok(tbd.length >= 1, "at least 1 TBD-marked stay");
   tbd.forEach((el) => {
     assert.strictEqual(el.querySelector(".tc-map"), null, "no map link for TBD");
   });

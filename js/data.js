@@ -9,28 +9,15 @@ var TRIP = {
       date: "Oct 8",
       day: { en: "Thursday", bg: "Четвъртък" },
       title: { en: "George departs Portland", bg: "Георги отпътува от Портланд" },
-      flight: {
-        airline: "British Airways",
-        number: "BA266",
-        depart: "PDX 7:30 PM",
-        arrive: "LHR 1:00 PM (+1 day)",
-        duration: "4h 55min",
-        cabin: "Economy"
-      },
-      accommodation: null,
-      notes: {
-        en: "Overnight flight to London Heathrow.",
-        bg: "Нощен полет до Лондон Хийтроу."
-      },
-      thingsToSee: []
-    },
-    {
-      id: "george-arrive-sofia",
-      location: { en: "Sofia", bg: "София" },
-      date: "Oct 9",
-      day: { en: "Friday", bg: "Петък" },
-      title: { en: "George arrives in Sofia", bg: "Георги пристига в София" },
       flights: [
+        {
+          airline: "British Airways",
+          number: "BA266",
+          depart: "PDX 7:30 PM",
+          arrive: "LHR 1:00 PM (+1 day)",
+          duration: "4h 55min",
+          cabin: "Economy"
+        },
         {
           airline: "Bulgaria Air",
           number: "FB852",
@@ -40,6 +27,20 @@ var TRIP = {
           cabin: "Economy Standard"
         }
       ],
+      accommodation: null,
+      notes: {
+        en: "Fly Portland to London, then London to Sofia. Overnight.",
+        bg: "Полет от Портланд до Лондон, след това Лондон до София. Нощен полет."
+      },
+      thingsToSee: []
+    },
+    {
+      id: "george-arrive-sofia",
+      location: { en: "Sofia", bg: "София" },
+      date: "Oct 9",
+      day: { en: "Friday", bg: "Петък" },
+      title: { en: "Arrive in Sofia", bg: "Пристигане в София" },
+      flight: null,
       accommodation: {
         name: "Premier Sofia Airport Hotel",
         details: { en: "Near Sofia Airport (SOF).", bg: "В близост до летище София (SOF)." }
@@ -55,12 +56,12 @@ var TRIP = {
       location: { en: "Plovdiv", bg: "Пловдив" },
       date: "Oct 10-15",
       day: { en: "Saturday - Thursday", bg: "Събота - Четвъртък" },
-      title: { en: "George in Plovdiv with family", bg: "Георги в Пловдив със семейството" },
+      title: { en: "Travel to Plovdiv, stay with family", bg: "Пътуване до Пловдив, настаняване при семейството" },
       flight: null,
       accommodation: null,
       notes: {
-        en: "A week with family in Plovdiv. George's hometown.",
-        bg: "Седмица със семейството в Пловдив. Родният град на Георги."
+        en: "Travel to Plovdiv. A week with family in George's hometown.",
+        bg: "Пътуване до Пловдив. Седмица със семейството в родния град на Георги."
       },
       thingsToSee: []
     },
@@ -70,28 +71,15 @@ var TRIP = {
       date: "Oct 15",
       day: { en: "Thursday", bg: "Четвъртък" },
       title: { en: "Harue departs Portland", bg: "Харуе отпътува от Портланд" },
-      flight: {
-        airline: "British Airways",
-        number: "BA266",
-        depart: "PDX 7:30 PM",
-        arrive: "LHR 1:00 PM (+1 day)",
-        duration: "4h 55min",
-        cabin: "Economy"
-      },
-      accommodation: null,
-      notes: {
-        en: "Same outbound flight as George, one week later.",
-        bg: "Същият полет като Георги, седмица по-късно."
-      },
-      thingsToSee: []
-    },
-    {
-      id: "harue-arrive-sofia",
-      location: { en: "Sofia", bg: "София" },
-      date: "Oct 16",
-      day: { en: "Friday", bg: "Петък" },
-      title: { en: "Harue arrives in Sofia", bg: "Харуе пристига в София" },
       flights: [
+        {
+          airline: "British Airways",
+          number: "BA266",
+          depart: "PDX 7:30 PM",
+          arrive: "LHR 1:00 PM (+1 day)",
+          duration: "4h 55min",
+          cabin: "Economy"
+        },
         {
           airline: "Bulgaria Air",
           number: "FB852",
@@ -101,6 +89,20 @@ var TRIP = {
           cabin: "Economy Standard"
         }
       ],
+      accommodation: null,
+      notes: {
+        en: "Same flights as George, one week later.",
+        bg: "Същите полети като Георги, седмица по-късно."
+      },
+      thingsToSee: []
+    },
+    {
+      id: "harue-arrive-sofia",
+      location: { en: "Sofia", bg: "София" },
+      date: "Oct 16",
+      day: { en: "Friday", bg: "Петък" },
+      title: { en: "Arrive in Sofia", bg: "Пристигане в София" },
+      flight: null,
       accommodation: {
         name: "Premier Sofia Airport Hotel",
         details: { en: "Near Sofia Airport (SOF). Reunite with George.", bg: "В близост до летище София (SOF). Събиране с Георги." }
@@ -203,7 +205,7 @@ var TRIP = {
     {
       id: "outing-father",
       location: { en: "Plovdiv", bg: "Пловдив" },
-      date: "Oct 22",
+      date: "Oct 21",
       day: { en: "Wednesday", bg: "Сряда" },
       title: { en: "Outing with father", bg: "Излизане с баща" },
       flight: null,
@@ -218,10 +220,24 @@ var TRIP = {
       thingsToSee: []
     },
     {
+      id: "family-oct22",
+      location: { en: "Plovdiv", bg: "Пловдив" },
+      date: "Oct 22",
+      day: { en: "Thursday", bg: "Четвъртък" },
+      title: { en: "Plovdiv -- time with family", bg: "Пловдив -- време със семейството" },
+      flight: null,
+      accommodation: null,
+      notes: {
+        en: "Relaxing day with family in Plovdiv.",
+        bg: "Спокойен ден със семейството в Пловдив."
+      },
+      thingsToSee: []
+    },
+    {
       id: "fathers-birthday",
       location: { en: "Plovdiv", bg: "Пловдив" },
       date: "Oct 23",
-      day: { en: "Thursday", bg: "Четвъртък" },
+      day: { en: "Friday", bg: "Петък" },
       title: { en: "Father's birthday", bg: "Рожден ден на бащата" },
       flight: null,
       accommodation: null,
@@ -233,40 +249,26 @@ var TRIP = {
     },
     {
       id: "dinner-mom",
-      location: { en: "Plovdiv", bg: "Пловдив" },
-      date: "Oct 24",
-      day: { en: "Friday", bg: "Петък" },
-      title: { en: "Dinner with Mom", bg: "Вечеря с Мама" },
-      flight: null,
-      accommodation: null,
-      notes: {
-        en: "Dinner with Mom.",
-        bg: "Вечеря с Мама."
-      },
-      thingsToSee: []
-    },
-    {
-      id: "sofia-krasi",
       location: { en: "Sofia", bg: "София" },
-      date: "Oct 25",
+      date: "Oct 24",
       day: { en: "Saturday", bg: "Събота" },
-      title: { en: "Sofia -- dinner with Krasi", bg: "София -- вечеря с Краси" },
+      title: { en: "Lunch with Mom, dinner with Krasi in Sofia", bg: "Обяд с Мама, вечеря с Краси в София" },
       flight: null,
       drive: { from: { en: "Plovdiv", bg: "Пловдив" }, to: { en: "Sofia", bg: "София" }, duration: "2h" },
       accommodation: {
-        name: "TBD (near SOF airport)",
-        details: { en: "Hotel near Sofia airport for early morning flight.", bg: "Хотел край летище София за ранен полет." }
+        name: "B1 Downtown Hotel Sofia",
+        details: { en: "Downtown Sofia for early morning flight.", bg: "В центъра на София за ранен полет." }
       },
       notes: {
-        en: "Drive to Sofia. Dinner with Krasi. Early night for 6:20 AM flight.",
-        bg: "Пътуване до София. Вечеря с Краси. Ранно лягане за полет в 6:20 сутринта."
+        en: "Lunch with Mom in Plovdiv, then drive to Sofia for dinner with Krasi. Stay at B1 Downtown Hotel.",
+        bg: "Обяд с Мама в Пловдив, след това пътуване до София за вечеря с Краси. Настаняване в B1 Downtown Hotel."
       },
       thingsToSee: []
     },
     {
       id: "return",
       location: null,
-      date: "Oct 26",
+      date: "Oct 25",
       day: { en: "Sunday", bg: "Неделя" },
       title: { en: "Fly back to Portland", bg: "Обратен полет за Портланд" },
       flights: [

@@ -97,7 +97,8 @@
 
   function renderLeg(leg, idx) {
     var locKey = leg.location ? leg.location.en.toLowerCase().replace(/\s+/g, "") : "transit";
-    var dayNum = idx + 1;
+    var range = parseDate(leg.date);
+    var dayNum = range ? range.from - 8 + 1 : idx + 1;
     var html = '<div class="timeline-card reveal" data-location="' + escapeHtml(locKey) + '" data-day-num="' + dayNum + '">';
     html += '<span class="tc-day-badge">Day ' + dayNum + '</span>';
     html += '<div class="tc-header">';
@@ -369,32 +370,37 @@
   }
 
   /* ---- Calendar ---- */
+  var DOW_HEADERS_EN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  var DOW_HEADERS_BG = ["Нд","Пн","Вт","Ср","Чт","Пт","Сб"];
   var DAY_NAMES_EN = ["Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday"];
   var DAY_NAMES_BG = ["Четвъртък","Петък","Събота","Неделя","Понеделник","Вторник","Сряда"];
   var MONTH_BG = TRIP_CONFIG.month.bg;
+  var TRIP_START = 8;
+  var TRIP_END = 25;
+
+  function parseDate(str) {
+    var m = str.match(/Oct\s+(\d+)(?:\s*-\s*(\d+))?/);
+    if (!m) return null;
+    return { from: parseInt(m[1], 10), to: parseInt(m[2] || m[1], 10) };
+  }
 
   function buildDayMap() {
     var days = [];
     var legs = TRIP.legs;
-    for (var d = 8; d <= 26; d++) {
+    for (var d = TRIP_START; d <= TRIP_END; d++) {
       var entry = { num: d, date: "Oct " + d, status: "free", desc: "", leg: null };
       for (var i = 0; i < legs.length; i++) {
         var leg = legs[i];
-        var dateStr = leg.date;
-        var rangeMatch = dateStr.match(/Oct\s+(\d+)\s*-\s*(\d+)/);
-        if (rangeMatch) {
-          var from = parseInt(rangeMatch[1], 10);
-          var to = parseInt(rangeMatch[2], 10);
-          if (d >= from && d <= to) { entry.leg = leg; break; }
-        } else {
-          var singleMatch = dateStr.match(/Oct\s+(\d+)/);
-          if (singleMatch && parseInt(singleMatch[1], 10) === d) { entry.leg = leg; break; }
-        }
+        var range = parseDate(leg.date);
+        if (!range) continue;
+        if (d >= range.from && d <= range.to) { entry.leg = leg; break; }
       }
       if (entry.leg) {
+        var hasConcrete = entry.leg.flight || entry.leg.flights || entry.leg.drive ||
+          (entry.leg.thingsToSee && entry.leg.thingsToSee.length > 0) || entry.leg.pullquote;
         entry.desc = t(entry.leg.title);
         if (entry.leg.flight || entry.leg.flights) entry.status = "travel";
-        else if (entry.leg.accommodation) entry.status = "family";
+        else if (hasConcrete) entry.status = "booked";
         else entry.status = "free";
       }
       days.push(entry);
@@ -408,16 +414,32 @@
     var days = buildDayMap();
     var isBg = state.lang === "bg";
     var dayNames = isBg ? DAY_NAMES_BG : DAY_NAMES_EN;
-    cal.innerHTML = days.map(function (day) {
-      var dow = (day.num - 8) % 7;
-      var dayName = dayNames[dow];
-      var dateLabel = isBg ? day.num + " " + MONTH_BG : day.date;
+    var dowHeaders = isBg ? DOW_HEADERS_BG : DOW_HEADERS_EN;
+    var startDow = (4 + TRIP_START - 1) % 7;
+
+    var html = '<div class="cal-grid">';
+    html += '<div class="cal-header">';
+    for (var h = 0; h < 7; h++) {
+      html += '<div class="cal-header-cell">' + dowHeaders[h] + '</div>';
+    }
+    html += '</div><div class="cal-body">';
+
+    for (var p = 0; p < startDow; p++) {
+      html += '<div class="cal-cell cal-empty"></div>';
+    }
+
+    days.forEach(function (day) {
+      var dateLabel = isBg ? day.num + " " + MONTH_BG : "Oct " + day.num;
       var desc = day.desc || (isBg ? "Свободен ден" : "Free day");
-      return '<div class="cal-day ' + day.status + '">' +
-        '<span class="cal-day-date">' + dateLabel + ' (' + dayName + ')</span>' +
+      var status = day.leg ? (day.status === "travel" ? "planned" : "booked") : "free";
+      html += '<div class="cal-cell cal-day ' + status + '">' +
+        '<span class="cal-day-date">' + dateLabel + '</span>' +
         '<span class="cal-day-desc">' + escapeHtml(desc) + '</span>' +
         '</div>';
-    }).join("");
+    });
+
+    html += '</div></div>';
+    cal.innerHTML = html;
   }
 
   function populateDaySelect() {
@@ -428,7 +450,7 @@
     var dayNames = isBg ? DAY_NAMES_BG : DAY_NAMES_EN;
     var opts = '<option value="">' + (isBg ? "Изберете ден..." : "Select a day...") + '</option>';
     days.forEach(function (day) {
-      var dow = (day.num - 8) % 7;
+      var dow = (4 + day.num - 1) % 7;
       var dayName = dayNames[dow];
       var label = (isBg ? day.num + " " + MONTH_BG : day.date) + " - " + dayName;
       var disabled = day.status !== "free" ? " disabled" : "";
