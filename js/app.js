@@ -372,8 +372,8 @@
   /* ---- Calendar ---- */
   var DOW_HEADERS_EN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   var DOW_HEADERS_BG = ["Нд","Пн","Вт","Ср","Чт","Пт","Сб"];
-  var DAY_NAMES_EN = ["Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday"];
-  var DAY_NAMES_BG = ["Четвъртък","Петък","Събота","Неделя","Понеделник","Вторник","Сряда"];
+  var DAY_NAMES_EN = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var DAY_NAMES_BG = ["Неделя","Понеделник","Вторник","Сряда","Четвъртък","Петък","Събота"];
   var MONTH_BG = TRIP_CONFIG.month.bg;
   var TRIP_START = 8;
   var TRIP_END = 25;
