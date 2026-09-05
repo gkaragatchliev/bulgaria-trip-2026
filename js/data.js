@@ -191,8 +191,8 @@ var TRIP = {
     {
       id: "plovdiv-family",
       location: { en: "Plovdiv", bg: "Пловдив" },
-      date: "Oct 19-21",
-      day: { en: "Monday - Wednesday", bg: "Понеделник - Сряда" },
+      date: "Oct 19-20",
+      day: { en: "Monday - Tuesday", bg: "Понеделник - Вторник" },
       title: { en: "Plovdiv -- time with family", bg: "Пловдив -- време със семейството" },
       flight: null,
       accommodation: null,
@@ -204,20 +204,31 @@ var TRIP = {
     },
     {
       id: "outing-father",
-      location: { en: "Plovdiv", bg: "Пловдив" },
+      location: { en: "Devin", bg: "Девин" },
       date: "Oct 21",
       day: { en: "Wednesday", bg: "Сряда" },
       title: { en: "Outing with father", bg: "Излизане с баща" },
       flight: null,
+      drive: {
+        from: { en: "Plovdiv", bg: "Пловдив" },
+        to: { en: "Devin", bg: "Девин" },
+        maps: "https://maps.app.goo.gl/EQaxYNrcYmJpBXgV8",
+        roadConditions: { en: "Mostly highway then mountain road; ~2.5 hours.", bg: "Основно магистрала, след това планински път; ~2.5 часа." }
+      },
       accommodation: {
-        name: "TBD",
-        details: { en: "Hotel to be confirmed.", bg: "Хотел за потвърждение." }
+        name: "Hotel Ismena",
+        link: "https://maps.app.goo.gl/EQaxYNrcYmJpBXgV8",
+        details: { en: "Breakfast, dinner and hot tub included.", bg: "Закуска, вечеря и джакузи включени." }
       },
       notes: {
-        en: "Day out with father. Hotel details to be confirmed.",
-        bg: "Ден с бащата. Детайлите за хотела предстоят да бъдат потвърдени."
+        en: "Day out with father. Hotel Ismena in Devin, hot springs resort.",
+        bg: "Ден с бащата. Хотел Исмена в Девин, курорт с минерални извори."
       },
-      thingsToSee: []
+      thingsToSee: [
+        { name: { en: "Devin Hot Springs", bg: "Девински минерални извори" }, info: { en: "Natural hot mineral water springs, the hotel has direct access.", bg: "Естествени горещи минерални извори, хотела има директен достъп." } },
+        { name: { en: "Trigrad Gorge", bg: "Триградска gorge" }, info: { en: "Dramatic gorge near Devin with Devil's Throat cave and Trigrad Monastery.", bg: "Драматична клисура край Devin с пещерата Дяволското гърло и Триградски манастир." } },
+        { name: { en: "Yagodina Cave", bg: "Ягодина пещера" }, info: { en: "One of Bulgaria's longest caves with spectacular formations.", bg: "Една от най-дългите пещери в България с впечатляващи формации." } }
+      ]
     },
     {
       id: "family-oct22",

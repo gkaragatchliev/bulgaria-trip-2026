@@ -104,13 +104,13 @@ test("flights have all required fields", () => {
   });
 });
 
-test("TBD accommodations are present for correct legs", () => {
+test("all accommodations have names", () => {
   const w = fresh().window;
   const legs = w.__trip.TRIP.legs;
-  const tbdLegs = legs.filter((l) => l.accommodation && l.accommodation.name.includes("TBD"));
-  assert.ok(tbdLegs.length >= 1, "at least 1 TBD accommodation");
-  tbdLegs.forEach((l) => {
-    assert.ok(l.accommodation.name.includes("TBD"), `${l.id} has TBD`);
+  const namedLegs = legs.filter((l) => l.accommodation);
+  assert.ok(namedLegs.length >= 1, "at least 1 named accommodation");
+  namedLegs.forEach((l) => {
+    assert.ok(l.accommodation.name && l.accommodation.name.length > 0, `${l.id} has accommodation name`);
   });
 });
 
@@ -180,11 +180,11 @@ test("accommodation details render", () => {
   assert.ok(card.querySelector(".tc-accommodation"), "accommodation section exists");
 });
 
-test("TBD accommodation renders", () => {
+test("named accommodation renders", () => {
   const w = fresh().window;
   const cards = w.document.querySelectorAll("#timeline .timeline-card");
-  const tbdCards = Array.from(cards).filter((c) => c.textContent.includes("TBD"));
-  assert.ok(tbdCards.length >= 1, "at least 1 TBD card");
+  const hotelCards = Array.from(cards).filter((c) => c.textContent.includes("Hotel"));
+  assert.ok(hotelCards.length >= 1, "at least 1 hotel card");
 });
 
 test("thingsToSee expandable section renders for Melnik legs", () => {
@@ -332,14 +332,14 @@ test("t() handles null/undefined", () => {
 test("overview strip renders distinct stops in trip order", () => {
   const w = fresh().window;
   const chips = Array.from(w.document.querySelectorAll("#overview .ov-chip")).map((c) => c.textContent);
-  assert.deepStrictEqual(chips, ["Sofia", "Plovdiv", "Sofia", "Melnik", "Plovdiv", "Sofia"]);
+  assert.deepStrictEqual(chips, ["Sofia", "Plovdiv", "Sofia", "Melnik", "Plovdiv", "Devin", "Plovdiv", "Sofia"]);
 });
 
 test("overview chips switch language with the page", () => {
   const w = fresh().window;
   w.__trip.setLang("bg");
   const chips = Array.from(w.document.querySelectorAll("#overview .ov-chip")).map((c) => c.textContent);
-  assert.deepStrictEqual(chips, ["София", "Пловдив", "София", "Мелник", "Пловдив", "София"]);
+  assert.deepStrictEqual(chips, ["София", "Пловдив", "София", "Мелник", "Пловдив", "Девин", "Пловдив", "София"]);
 });
 
 test("named accommodations get a Google Maps link", () => {
@@ -352,14 +352,15 @@ test("named accommodations get a Google Maps link", () => {
   assert.ok(map.getAttribute("href").indexOf("google.com/maps") !== -1);
 });
 
-test("TBD accommodations get the is-tbd marker and no map link", () => {
+test("named accommodations get a map link", () => {
   const w = fresh().window;
   const d = w.document;
-  const tbd = Array.from(d.querySelectorAll(".tc-accommodation.is-tbd"));
-  assert.ok(tbd.length >= 1, "at least 1 TBD-marked stay");
-  tbd.forEach((el) => {
-    assert.strictEqual(el.querySelector(".tc-map"), null, "no map link for TBD");
+  const cards = Array.from(d.querySelectorAll("#timeline .timeline-card"));
+  const withMap = cards.filter((c) => {
+    const acc = c.querySelector(".tc-accommodation");
+    return acc && acc.querySelector(".tc-map");
   });
+  assert.ok(withMap.length >= 1, "at least 1 accommodation with map link");
 });
 
 test("thingsToSee entries include a Google Maps link", () => {
