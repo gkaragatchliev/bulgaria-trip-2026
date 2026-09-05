@@ -123,6 +123,7 @@ var TRIP = {
       drive: { from: { en: "Sofia", bg: "София" }, to: { en: "Melnik", bg: "Мелник" }, duration: "2h 45min" },
       accommodation: {
         name: "Guest House Holiday",
+        website: "https://guesthouseholidaymelnik.hotelonia.com/?lang=en",
         details: { en: "3-bedroom apartment in Melnik. Stay with family.", bg: "3-стаен апартамент в Мелник. Настаняване със семейството." }
       },
       notes: {
@@ -217,7 +218,7 @@ var TRIP = {
       },
       accommodation: {
         name: "Hotel Ismena",
-        link: "https://maps.app.goo.gl/EQaxYNrcYmJpBXgV8",
+        website: "https://ismena.bg/",
         details: { en: "Breakfast, dinner and hot tub included.", bg: "Закуска, вечеря и джакузи включени." }
       },
       notes: {

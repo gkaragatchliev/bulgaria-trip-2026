@@ -267,13 +267,13 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
   color: var(--muted);
   font-size: 0.85rem;
 }
-.tc-map {
+.tc-map, .tc-site {
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--teal-600);
   white-space: nowrap;
 }
-.tc-map:hover { text-decoration: underline; }
+.tc-map:hover, .tc-site:hover { text-decoration: underline; }
 .tc-accommodation.is-tbd {
   background: var(--warn-bg);
   border: 1px solid #f3d9b0;
@@ -522,14 +522,24 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
   transform: translateY(0);
 }
 
-/* ---------- SVG route map ---------- */
+/* ---------- Real map ---------- */
 .route-map {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 8px;
 }
-.route-map svg {
+.map-img {
   max-width: 100%;
   height: auto;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+.map-caption {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+.map-caption a {
+  color: var(--teal-600);
 }
 
 /* ---------- Card hover polish ---------- */
@@ -754,7 +764,7 @@ a:hover { color: var(--amber-700); text-decoration: underline; }
 
 /* ---------- Print ---------- */
 @media print {
-  .lang-bar, .tc-map, .progress-bar, .tc-day-badge, .plan-toggle-btn, .calendar-section { display: none !important; }
+  .lang-bar, .tc-map, .tc-site, .progress-bar, .tc-day-badge, .plan-toggle-btn, .calendar-section { display: none !important; }
   body::after { display: none !important; }
   body { background: #fff; }
   .hero { background: #fff; color: #111; padding: 24px 20px; }

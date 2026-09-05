@@ -128,6 +128,9 @@
       }
       if (!isTbd) {
         var q = leg.accommodation.name + (leg.location ? ", " + t(leg.location) : "");
+        if (leg.accommodation.website) {
+          html += ' <a class="tc-site" href="' + escapeHtml(leg.accommodation.website) + '" target="_blank" rel="noopener">' + (state.lang === "bg" ? "\u0441\u0430\u0439\u0442" : "site") + '</a>';
+        }
         html += ' <a class="tc-map" href="' + mapsLink(q) + '" target="_blank" rel="noopener">' + (state.lang === "bg" ? "\u043A\u0430\u0440\u0442\u0430" : "map") + '</a>';
       }
       html += '</div>';
@@ -308,44 +311,6 @@
     draw();
   }
 
-  function initRouteMap() {
-    var svg = document.getElementById("route-map");
-    if (!svg || typeof rough === "undefined") return;
-    var rc = rough.svg(svg);
-    var lines = svg.querySelectorAll(".static-line");
-    var dots = svg.querySelectorAll(".static-dot");
-    var i;
-    for (i = 0; i < lines.length; i++) lines[i].remove();
-    for (i = 0; i < dots.length; i++) dots[i].remove();
-
-    var pts = {
-      sofia: [130, 120],
-      plovdiv: [380, 195],
-      melnik: [155, 248]
-    };
-    var colors = {
-      sofia: "#14766d",
-      plovdiv: "#4f46e5",
-      melnik: "#9f1239"
-    };
-
-    svg.appendChild(rc.line(pts.sofia[0], pts.sofia[1], pts.plovdiv[0], pts.plovdiv[1], {
-      stroke: colors.sofia, strokeWidth: 2, roughness: 1.3, bowing: 2, strokeLineDash: [6, 4]
-    }));
-    svg.appendChild(rc.line(pts.sofia[0], pts.sofia[1], pts.melnik[0], pts.melnik[1], {
-      stroke: colors.melnik, strokeWidth: 2, roughness: 1.3, bowing: 2, strokeLineDash: [6, 4]
-    }));
-
-    ["sofia", "plovdiv", "melnik"].forEach(function (key) {
-      var c = pts[key];
-      var dot = rc.circle(c[0], c[1], 16, {
-        stroke: colors[key], fill: colors[key], fillStyle: "solid", roughness: 1.4, bowing: 1.5
-      });
-      dot.setAttribute("filter", "url(#glow)");
-      svg.appendChild(dot);
-    });
-  }
-
   function initScrollReveal() {
     revealObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -507,7 +472,6 @@
     renderAll();
     syncLangUI();
     initGParticles();
-    initRouteMap();
     if (typeof IntersectionObserver !== "undefined") initScrollReveal();
     initProgressBar();
     initCalendar();

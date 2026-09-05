@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=DM+Serif+Display:ital@0;1&family=Permanent+Marker&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=14" />
+  <link rel="stylesheet" href="css/style.css?v=17" />
 </head>
 <body>
   <div class="progress-bar" aria-hidden="true"></div>
@@ -35,36 +35,12 @@
     <section class="section">
       <div class="container">
         <div id="overview" class="overview" aria-label="Trip stops"></div>
-        <div class="route-map reveal" aria-hidden="true">
-          <svg id="route-map" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Route map: Sofia, Plovdiv, Melnik">
-            <defs>
-              <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#d9efeb" />
-                <stop offset="100%" stop-color="#f4f9f7" />
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="blur" />
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-            <rect width="600" height="300" rx="12" fill="url(#bgGrad)" />
-            <!-- Static fallback; lines + dots get redrawn hand-drawn style by rough.js when available -->
-            <line class="static-line" x1="130" y1="120" x2="380" y2="195" stroke="#14766d" stroke-width="2" stroke-dasharray="6,4" />
-            <line class="static-line" x1="130" y1="120" x2="155" y2="248" stroke="#9f1239" stroke-width="2" stroke-dasharray="6,4" />
-            <!-- Sofia -->
-            <circle class="static-dot" cx="130" cy="120" r="8" fill="var(--loc-sofia)" filter="url(#glow)" />
-            <circle class="static-core" cx="130" cy="120" r="3.5" fill="#fff" />
-            <text x="130" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="var(--loc-sofia)" font-family="Inter, system-ui, sans-serif">Sofia</text>
-            <!-- Plovdiv -->
-            <circle class="static-dot" cx="380" cy="195" r="8" fill="var(--loc-plovdiv)" filter="url(#glow)" />
-            <circle class="static-core" cx="380" cy="195" r="3.5" fill="#fff" />
-            <text x="380" y="213" text-anchor="middle" font-size="12" font-weight="700" fill="var(--loc-plovdiv)" font-family="Inter, system-ui, sans-serif">Plovdiv</text>
-            <!-- Melnik -->
-            <circle class="static-dot" cx="155" cy="248" r="8" fill="var(--loc-melnik)" filter="url(#glow)" />
-            <circle class="static-core" cx="155" cy="248" r="3.5" fill="#fff" />
-            <text x="155" y="266" text-anchor="middle" font-size="12" font-weight="700" fill="var(--loc-melnik)" font-family="Inter, system-ui, sans-serif">Melnik</text>
-          </svg>
-        </div>
+        <figure class="route-map reveal">
+          <img id="real-map" class="map-img" src="images/bulgaria-map.jpg?v=1" alt="Political map of Bulgaria showing cities and regions (source: FOMOSO)" />
+          <figcaption class="map-caption">
+            Map: FOMOSO / MOSOmedia &middot; <a href="https://www.fomoso.org/en/mosopedia/background-knowledge/bulgaria-political-background/" target="_blank" rel="noopener">source</a>
+          </figcaption>
+        </figure>
         <div id="timeline" class="timeline"></div>
       </div>
     </section>
@@ -117,9 +93,8 @@
   </footer>
 
   <script src="vendor/splitting.min.js?v=8"></script>
-  <script src="vendor/rough.min.js?v=8"></script>
   <script src="js/config.js?v=1"></script>
-  <script src="js/data.js?v=11"></script>
-  <script src="js/app.js?v=16"></script>
+  <script src="js/data.js?v=12"></script>
+  <script src="js/app.js?v=18"></script>
 </body>
 </html>
