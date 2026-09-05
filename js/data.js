@@ -43,6 +43,7 @@ var TRIP = {
       flight: null,
       accommodation: {
         name: "Premier Sofia Airport Hotel",
+        website: "https://www.hotelpremiersofia.com/en",
         details: { en: "Near Sofia Airport (SOF).", bg: "В близост до летище София (SOF)." }
       },
       notes: {
@@ -105,6 +106,7 @@ var TRIP = {
       flight: null,
       accommodation: {
         name: "Premier Sofia Airport Hotel",
+        website: "https://www.hotelpremiersofia.com/en",
         details: { en: "Near Sofia Airport (SOF). Reunite with George.", bg: "В близост до летище София (SOF). Събиране с Георги." }
       },
       notes: {
@@ -269,6 +271,7 @@ var TRIP = {
       drive: { from: { en: "Plovdiv", bg: "Пловдив" }, to: { en: "Sofia", bg: "София" }, duration: "2h" },
       accommodation: {
         name: "B1 Downtown Hotel Sofia",
+        website: "https://b1hotels.com/downtown/",
         details: { en: "Downtown Sofia for early morning flight.", bg: "В центъра на София за ранен полет." }
       },
       notes: {

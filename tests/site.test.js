@@ -380,13 +380,15 @@ test("hotel accommodations render their name as a link to their website", () => 
   const d = w.document;
   const expected = {
     "Guest House Holiday": "https://guesthouseholidaymelnik.hotelonia.com/?lang=en",
-    "Hotel Ismena": "https://ismena.bg/"
+    "Hotel Ismena": "https://ismena.bg/",
+    "Premier Sofia Airport Hotel": "https://www.hotelpremiersofia.com/en",
+    "B1 Downtown Hotel Sofia": "https://b1hotels.com/downtown/"
   };
   Object.keys(expected).forEach((name) => {
-    const card = Array.from(d.querySelectorAll("#timeline .timeline-card"))
-      .find((c) => c.textContent.includes(name));
-    assert.ok(card, name + " card present");
-    const link = card.querySelector(".tc-accommodation a.tc-site");
+    const cards = Array.from(d.querySelectorAll("#timeline .timeline-card"))
+      .filter((c) => c.textContent.includes(name));
+    assert.ok(cards.length >= 1, name + " card present");
+    const link = cards[0].querySelector(".tc-accommodation a.tc-site");
     assert.ok(link, name + " has a clickable link");
     assert.strictEqual(link.getAttribute("href"), expected[name], name + " href");
     assert.ok(link.textContent.includes(name), name + " link text contains hotel name");
