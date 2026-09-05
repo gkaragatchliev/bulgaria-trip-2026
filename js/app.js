@@ -122,15 +122,16 @@
       var isTbd = /tbd/i.test(leg.accommodation.name);
       html += '<div class="tc-section tc-accommodation' + (isTbd ? " is-tbd" : "") + '">';
       html += '<span class="tc-label">' + (state.lang === "bg" ? "Настаняване" : "Stay") + '</span>';
-      html += '<strong>' + escapeHtml(leg.accommodation.name) + '</strong>';
+      if (leg.accommodation.website && !isTbd) {
+        html += '<strong><a class="tc-site" href="' + escapeHtml(leg.accommodation.website) + '" target="_blank" rel="noopener">' + escapeHtml(leg.accommodation.name) + '</a></strong>';
+      } else {
+        html += '<strong>' + escapeHtml(leg.accommodation.name) + '</strong>';
+      }
       if (leg.accommodation.details) {
         html += '<span class="tc-detail"> ' + escapeHtml(t(leg.accommodation.details)) + '</span>';
       }
       if (!isTbd) {
         var q = leg.accommodation.name + (leg.location ? ", " + t(leg.location) : "");
-        if (leg.accommodation.website) {
-          html += ' <a class="tc-site" href="' + escapeHtml(leg.accommodation.website) + '" target="_blank" rel="noopener">' + (state.lang === "bg" ? "\u0441\u0430\u0439\u0442" : "site") + '</a>';
-        }
         html += ' <a class="tc-map" href="' + mapsLink(q) + '" target="_blank" rel="noopener">' + (state.lang === "bg" ? "\u043A\u0430\u0440\u0442\u0430" : "map") + '</a>';
       }
       html += '</div>';

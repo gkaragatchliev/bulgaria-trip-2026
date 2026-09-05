@@ -375,7 +375,7 @@ test("named accommodations get a map link", () => {
   assert.ok(withMap.length >= 1, "at least 1 accommodation with map link");
 });
 
-test("hotel accommodations render a link to their website", () => {
+test("hotel accommodations render their name as a link to their website", () => {
   const w = fresh().window;
   const d = w.document;
   const expected = {
@@ -386,10 +386,11 @@ test("hotel accommodations render a link to their website", () => {
     const card = Array.from(d.querySelectorAll("#timeline .timeline-card"))
       .find((c) => c.textContent.includes(name));
     assert.ok(card, name + " card present");
-    const site = card.querySelector(".tc-accommodation .tc-site");
-    assert.ok(site, name + " site link present");
-    assert.strictEqual(site.getAttribute("href"), expected[name], name + " href");
-    assert.ok(site.getAttribute("target") === "_blank", name + " opens new tab");
+    const link = card.querySelector(".tc-accommodation a.tc-site");
+    assert.ok(link, name + " has a clickable link");
+    assert.strictEqual(link.getAttribute("href"), expected[name], name + " href");
+    assert.ok(link.textContent.includes(name), name + " link text contains hotel name");
+    assert.ok(link.getAttribute("target") === "_blank", name + " opens new tab");
   });
 });
 
