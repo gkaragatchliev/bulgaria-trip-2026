@@ -427,6 +427,40 @@ test("hero shows travelers line", () => {
   assert.ok(text.includes("Portland"));
 });
 
+test("dinner with Rali is a reserved leg on Oct 15, family stay ends Oct 14", () => {
+  const w = fresh().window;
+  const legs = w.__trip.TRIP.legs;
+  const dinner = legs.find((l) => l.id === "dinner-rali");
+  assert.ok(dinner, "dinner-rali leg exists");
+  assert.strictEqual(dinner.date, "Oct 15", "dinner is on Oct 15");
+  assert.ok(dinner.event && dinner.event.en && dinner.event.bg, "dinner has event en/bg");
+  const plovdiv = legs.find((l) => l.id === "george-plovdiv");
+  assert.strictEqual(plovdiv.date, "Oct 10-14", "family stay now ends Oct 14");
+});
+
+test("dinner event renders in the timeline with an Event label", () => {
+  const w = fresh().window;
+  const d = w.document;
+  const card = Array.from(d.querySelectorAll("#timeline .timeline-card"))
+    .find((c) => c.querySelector(".tc-title").textContent.includes("Dinner with Rali"));
+  assert.ok(card, "dinner card present");
+  assert.ok(card.querySelector(".tc-event"), "event section rendered");
+  assert.ok(card.querySelector(".tc-event .tc-label").textContent.includes("Event"), "Event label shown");
+  assert.ok(card.textContent.includes("Rali"), "event detail shown");
+});
+
+test("Oct 15 calendar cell is booked, not free", () => {
+  const w = fresh().window;
+  const d = w.document;
+  d.querySelector("#plan-toggle").dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
+  const cell = Array.from(d.querySelectorAll("#calendar .cal-day"))
+    .find((c) => c.querySelector(".cal-day-date").textContent === "Oct 15");
+  assert.ok(cell, "Oct 15 cell rendered");
+  assert.ok(!cell.classList.contains("free"), "Oct 15 is not free");
+  assert.ok(cell.classList.contains("booked"), "Oct 15 is booked");
+  assert.ok(cell.querySelector(".cal-day-desc").textContent.includes("Dinner with Rali"), "Oct 15 shows the dinner");
+});
+
 test("language buttons expose aria-pressed state", () => {
   const w = fresh().window;
   const d = w.document;

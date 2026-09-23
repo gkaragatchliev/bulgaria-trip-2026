@@ -55,14 +55,32 @@ var TRIP = {
     {
       id: "george-plovdiv",
       location: { en: "Plovdiv", bg: "Пловдив" },
-      date: "Oct 10-15",
-      day: { en: "Saturday - Thursday", bg: "Събота - Четвъртък" },
+      date: "Oct 10-14",
+      day: { en: "Saturday - Wednesday", bg: "Събота - Сряда" },
       title: { en: "Travel to Plovdiv, stay with family", bg: "Пътуване до Пловдив, настаняване при семейството" },
       flight: null,
       accommodation: null,
       notes: {
         en: "Travel to Plovdiv. A week with family in George's hometown.",
         bg: "Пътуване до Пловдив. Седмица със семейството в родния град на Георги."
+      },
+      thingsToSee: []
+    },
+    {
+      id: "dinner-rali",
+      location: { en: "Plovdiv", bg: "Пловдив" },
+      date: "Oct 15",
+      day: { en: "Thursday", bg: "Четвъртък" },
+      title: { en: "Dinner with Rali and family", bg: "Вечеря с Рали и семейството" },
+      flight: null,
+      event: {
+        en: "Dinner with Rali and family.",
+        bg: "Вечеря с Рали и семейството."
+      },
+      accommodation: null,
+      notes: {
+        en: "Last day in Plovdiv, reserved for dinner with Rali and family.",
+        bg: "Последен ден в Пловдив, запазен за вечеря с Рали и семейството."
       },
       thingsToSee: []
     },

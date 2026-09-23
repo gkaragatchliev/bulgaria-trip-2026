@@ -137,6 +137,13 @@
       html += '</div>';
     }
 
+    if (leg.event) {
+      html += '<div class="tc-section tc-event">';
+      html += '<span class="tc-label">' + (state.lang === "bg" ? "Събитие" : "Event") + '</span>';
+      html += '<span class="tc-event-detail">' + escapeHtml(t(leg.event)) + '</span>';
+      html += '</div>';
+    }
+
     if (leg.notes) {
       html += '<p class="tc-notes">' + escapeHtml(t(leg.notes)) + '</p>';
     }
@@ -363,7 +370,8 @@
       }
       if (entry.leg) {
         var hasConcrete = entry.leg.flight || entry.leg.flights || entry.leg.drive ||
-          (entry.leg.thingsToSee && entry.leg.thingsToSee.length > 0) || entry.leg.pullquote;
+          (entry.leg.thingsToSee && entry.leg.thingsToSee.length > 0) || entry.leg.pullquote ||
+          entry.leg.event;
         entry.desc = t(entry.leg.title);
         if (entry.leg.flight || entry.leg.flights) entry.status = "travel";
         else if (hasConcrete) entry.status = "booked";
