@@ -461,6 +461,36 @@ test("Oct 15 calendar cell is booked, not free", () => {
   assert.ok(cell.querySelector(".cal-day-desc").textContent.includes("Dinner with Rali"), "Oct 15 shows the dinner");
 });
 
+test("Oct 22 is reserved for dinner with Mom, Oct 23 for Dad's birthday dinner", () => {
+  const w = fresh().window;
+  const legs = w.__trip.TRIP.legs;
+  const mom = legs.find((l) => l.id === "dinner-mom-oct22");
+  assert.ok(mom, "Oct 22 dinner leg exists");
+  assert.strictEqual(mom.date, "Oct 22", "mom dinner is on Oct 22");
+  assert.ok(mom.event && mom.event.en && mom.event.bg, "mom dinner has event en/bg");
+  const dad = legs.find((l) => l.id === "fathers-birthday");
+  assert.ok(dad, "Oct 23 birthday leg exists");
+  assert.strictEqual(dad.date, "Oct 23", "birthday dinner is on Oct 23");
+  assert.ok(dad.event && dad.event.en && dad.event.bg, "birthday dinner has event en/bg");
+});
+
+test("Oct 22 and Oct 23 are booked and not offered as free days", () => {
+  const w = fresh().window;
+  const d = w.document;
+  d.querySelector("#plan-toggle").dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
+  ["Oct 22", "Oct 23"].forEach((label) => {
+    const cell = Array.from(d.querySelectorAll("#calendar .cal-day"))
+      .find((c) => c.querySelector(".cal-day-date").textContent === label);
+    assert.ok(cell, label + " cell rendered");
+    assert.ok(!cell.classList.contains("free"), label + " is not free");
+    assert.ok(cell.classList.contains("booked"), label + " is booked");
+    const opt = Array.from(d.querySelectorAll("#plan-day option"))
+      .find((o) => o.value === label);
+    assert.ok(opt, label + " option rendered");
+    assert.ok(opt.disabled, label + " is not available to others");
+  });
+});
+
 test("language buttons expose aria-pressed state", () => {
   const w = fresh().window;
   const d = w.document;

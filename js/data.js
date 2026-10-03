@@ -252,16 +252,20 @@ var TRIP = {
       ]
     },
     {
-      id: "family-oct22",
+      id: "dinner-mom-oct22",
       location: { en: "Plovdiv", bg: "Пловдив" },
       date: "Oct 22",
       day: { en: "Thursday", bg: "Четвъртък" },
-      title: { en: "Plovdiv -- time with family", bg: "Пловдив -- време със семейството" },
+      title: { en: "Dinner with Mom", bg: "Вечеря с Мама" },
       flight: null,
+      event: {
+        en: "Dinner with Mom.",
+        bg: "Вечеря с Мама."
+      },
       accommodation: null,
       notes: {
-        en: "Relaxing day with family in Plovdiv.",
-        bg: "Спокойен ден със семейството в Пловдив."
+        en: "Reserved for dinner with Mom. No other activities.",
+        bg: "Запазено за вечеря с Мама. Без други дейности."
       },
       thingsToSee: []
     },
@@ -270,12 +274,16 @@ var TRIP = {
       location: { en: "Plovdiv", bg: "Пловдив" },
       date: "Oct 23",
       day: { en: "Friday", bg: "Петък" },
-      title: { en: "Father's birthday", bg: "Рожден ден на бащата" },
+      title: { en: "Birthday dinner with Dad", bg: "Вечеря за рождения ден на бащата" },
       flight: null,
+      event: {
+        en: "Birthday dinner with Dad.",
+        bg: "Вечеря за рождения ден на бащата."
+      },
       accommodation: null,
       notes: {
-        en: "Celebrate father's birthday.",
-        bg: "Празнуване на рожден ден на бащата."
+        en: "Reserved for Dad's birthday dinner. No other activities.",
+        bg: "Запазено за вечеря за рождения ден на бащата. Без други дейности."
       },
       thingsToSee: []
     },
