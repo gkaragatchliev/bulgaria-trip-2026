@@ -26,7 +26,7 @@ To create a new trip: copy folder, edit `js/config.js` + `js/data.js`, deploy.
 - `js/app.js` -- all logic in one IIFE: timeline rendering, calendar rendering,
   language toggle, activity proposal form, Splitting.js/Rough.js init,
   scroll-reveal, progress bar, G/H particles, XSS escaping.
-- `tests/site.test.js` -- `node --test` + jsdom, **33 tests, all green**.
+- `tests/site.test.js` -- `node --test` + jsdom, **42 tests, all green**.
 - `package.json` -- script `npm test`, devDependency `jsdom`.
 
 ## Commands

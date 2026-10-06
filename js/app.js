@@ -357,6 +357,15 @@
     return { from: parseInt(m[1], 10), to: parseInt(m[2] || m[1], 10) };
   }
 
+  function busyOverride(d) {
+    var busyDays = TRIP.busyDays || [];
+    for (var i = 0; i < busyDays.length; i++) {
+      var range = parseDate(busyDays[i].date);
+      if (range && d >= range.from && d <= range.to) return busyDays[i];
+    }
+    return null;
+  }
+
   function buildDayMap() {
     var days = [];
     var legs = TRIP.legs;
@@ -376,6 +385,11 @@
         if (entry.leg.flight || entry.leg.flights) entry.status = "travel";
         else if (hasConcrete) entry.status = "booked";
         else entry.status = "free";
+      }
+      var busy = busyOverride(d);
+      if (busy) {
+        entry.status = "busy";
+        entry.desc = t(busy.title);
       }
       days.push(entry);
     }
@@ -428,7 +442,8 @@
       var dayName = dayNames[dow];
       var label = (isBg ? day.num + " " + MONTH_BG : day.date) + " - " + dayName;
       var disabled = day.status !== "free" ? " disabled" : "";
-      var statusTag = day.status === "free" ? " [Free]" : day.status === "travel" ? " [Travel]" : " [Booked]";
+      var statusTag = day.status === "free" ? " [Free]" : day.status === "travel" ? " [Travel]" :
+        day.status === "busy" ? " [Busy]" : " [Booked]";
       opts += '<option value="' + day.date + '"' + disabled + '>' + label + statusTag + '</option>';
     });
     sel.innerHTML = opts;

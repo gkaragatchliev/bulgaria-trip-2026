@@ -337,5 +337,11 @@ var TRIP = {
       },
       thingsToSee: []
     }
+  ],
+  busyDays: [
+    {
+      date: "Oct 14",
+      title: { en: "Anton's Birthday dinner", bg: "Вечеря за рожден ден на Антон" }
+    }
   ]
 };

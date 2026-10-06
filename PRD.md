@@ -17,7 +17,7 @@ To create a new trip site from this template:
 ## Tech Stack
 - Vanilla HTML/CSS/JS (ES5, IIFE, var) -- no frameworks, no build step
 - Vendor libs: Splitting.js (hero title char animation), Rough.js (hand-drawn SVG map)
-- node --test + jsdom tests (33 tests), GitHub Pages deploy
+- node --test + jsdom tests (42 tests), GitHub Pages deploy
 
 ## Data Architecture
 - `js/config.js` -- trip-specific settings (title, dates, travelers, email, country, colors)
@@ -72,11 +72,12 @@ Bulgarian uses 24-hour time for flights.
 ## Data Model
 - TRIP_CONFIG: title, subtitle, travelers, email, country, month, primary color
 - TRIP.legs[]: each leg has id, location, date, day, title, flight/flights, drive, accommodation, notes, thingsToSee, pullquote
+- TRIP.busyDays[]: { date, title } days forced to busy (own calendar color, not reservable on the form)
 - Drive legs: { from, to, duration } for map + traffic links
 - All user-facing text: { en: "...", bg: "..." } bilingual objects
 
 ## Tests
-33 tests covering:
+42 tests covering:
 - Itinerary renders all legs
 - Language toggle switches content
 - TBD placeholders display correctly
@@ -86,6 +87,7 @@ Bulgarian uses 24-hour time for flights.
 - Day badges render
 - Activity form elements present
 - Calendar section hidden by default
+- Busy days (birthday dinners) colored in calendar and blocked on the form
 - Responsive layout at mobile breakpoints
 
 ## Deployment

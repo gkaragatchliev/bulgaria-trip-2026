@@ -491,6 +491,45 @@ test("Oct 22 and Oct 23 are booked and not offered as free days", () => {
   });
 });
 
+test("Oct 14 is marked busy for Anton's birthday dinner", () => {
+  const w = fresh().window;
+  const d = w.document;
+  d.querySelector("#plan-toggle").dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
+  const cell = Array.from(d.querySelectorAll("#calendar .cal-day"))
+    .find((c) => c.querySelector(".cal-day-date").textContent === "Oct 14");
+  assert.ok(cell, "Oct 14 cell rendered");
+  assert.ok(cell.classList.contains("busy"), "Oct 14 is busy");
+  assert.ok(!cell.classList.contains("free"), "Oct 14 is not free");
+  assert.ok(!cell.classList.contains("booked"), "Oct 14 is not booked");
+  assert.ok(cell.querySelector(".cal-day-desc").textContent.includes("Anton"), "cell shows Anton's birthday");
+
+  const opt = Array.from(d.querySelectorAll("#plan-day option"))
+    .find((o) => o.value === "Oct 14");
+  assert.ok(opt, "Oct 14 option rendered");
+  assert.ok(opt.disabled, "Oct 14 cannot be reserved on the form");
+  assert.ok(opt.textContent.includes("Busy"), "option tagged Busy");
+});
+
+test("busy day text is bilingual and its calendar color differs from free/booked", () => {
+  const w = fresh().window;
+  const d = w.document;
+  d.querySelector("#plan-toggle").dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
+  const bgDesc = () => Array.from(d.querySelectorAll("#calendar .cal-day"))
+    .find((c) => c.querySelector(".cal-day-date").textContent === "14 октомври")
+    .querySelector(".cal-day-desc").textContent;
+  w.__trip.setLang("bg");
+  const toggle = () => d.querySelector("#plan-toggle")
+    .dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
+  toggle(); toggle(); // close + reopen so the calendar re-renders in BG
+  assert.ok(bgDesc().includes("Антон"), "BG label shows Anton's birthday in Bulgarian");
+
+  const css = fs.readFileSync(path.join(ROOT, "css", "style.css"), "utf8");
+  const bgOf = (cls) => (css.match(new RegExp("\\." + cls + "\\s*\\{[^}]*background:\\s*(#\\w+)")) || [])[1];
+  assert.ok(bgOf("cal-day\\.busy"), "busy rule has a background");
+  assert.notStrictEqual(bgOf("cal-day\\.busy"), bgOf("cal-day\\.free"), "busy differs from free");
+  assert.notStrictEqual(bgOf("cal-day\\.busy"), bgOf("cal-day\\.booked"), "busy differs from booked");
+});
+
 test("language buttons expose aria-pressed state", () => {
   const w = fresh().window;
   const d = w.document;
