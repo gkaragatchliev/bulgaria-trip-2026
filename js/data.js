@@ -340,6 +340,10 @@ var TRIP = {
   ],
   busyDays: [
     {
+      date: "Oct 13",
+      title: { en: "Dinner with classmates", bg: "Вечеря с однокласници" }
+    },
+    {
       date: "Oct 14",
       title: { en: "Anton's Birthday dinner", bg: "Вечеря за рожден ден на Антон" }
     }
