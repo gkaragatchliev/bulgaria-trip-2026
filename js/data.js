@@ -55,14 +55,52 @@ var TRIP = {
     {
       id: "george-plovdiv",
       location: { en: "Plovdiv", bg: "Пловдив" },
-      date: "Oct 10-14",
-      day: { en: "Saturday - Wednesday", bg: "Събота - Сряда" },
+      date: "Oct 10",
+      day: { en: "Saturday", bg: "Събота" },
       title: { en: "Travel to Plovdiv, stay with family", bg: "Пътуване до Пловдив, настаняване при семейството" },
       flight: null,
       accommodation: null,
       notes: {
-        en: "Travel to Plovdiv. A week with family in George's hometown.",
-        bg: "Пътуване до Пловдив. Седмица със семейството в родния град на Георги."
+        en: "Travel to Plovdiv. Staying with family in George's hometown. Oct 11 (Sun) and Oct 12 (Mon) are free days.",
+        bg: "Пътуване до Пловдив. Настаняване при семейството в родния град на Георги. 11 окт. (нед.) и 12 окт. (пон.) са свободни дни."
+      },
+      thingsToSee: []
+    },
+    {
+      id: "dinner-classmates",
+      location: { en: "Plovdiv", bg: "Пловдив" },
+      date: "Oct 13",
+      day: { en: "Tuesday", bg: "Вторник" },
+      title: { en: "Dinner with classmates", bg: "Вечеря с однокласници" },
+      flight: null,
+      event: {
+        en: "19:00 - Dinner with classmates at Restaurant Central Park, Mladezhki Hill, Plovdiv.",
+        bg: "19:00 ч. - Вечеря с однокласници в Ресторант Сентрал парк, Младежки хълм, Пловдив.",
+        website: "https://www.centralpark-bg.com/mladejki-hulm",
+        mapQuery: "Ресторант Сентрал парк, Младежки хълм, Пловдив"
+      },
+      accommodation: null,
+      notes: {
+        en: "Dinner with classmates at 19:00, Restaurant Central Park on Youth Hill.",
+        bg: "Вечеря с однокласници в 19:00 ч. в Ресторант Сентрал парк на Младежки хълм."
+      },
+      thingsToSee: []
+    },
+    {
+      id: "dinner-anton",
+      location: { en: "Plovdiv", bg: "Пловдив" },
+      date: "Oct 14",
+      day: { en: "Wednesday", bg: "Сряда" },
+      title: { en: "Birthday dinner with Anton", bg: "Вечеря за рожден ден на Антон" },
+      flight: null,
+      event: {
+        en: "Birthday dinner with Anton. Time and place to be confirmed.",
+        bg: "Вечеря за рожден ден на Антон. Часът и мястото се уточняват."
+      },
+      accommodation: null,
+      notes: {
+        en: "Reserved for Anton's birthday dinner. Details to be confirmed.",
+        bg: "Запазено за вечеря за рожден ден на Антон. Детайлите се уточняват."
       },
       thingsToSee: []
     },

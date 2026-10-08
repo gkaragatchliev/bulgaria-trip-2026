@@ -427,7 +427,7 @@ test("hero shows travelers line", () => {
   assert.ok(text.includes("Portland"));
 });
 
-test("dinner with Rali is a reserved leg on Oct 15, family stay ends Oct 14", () => {
+test("dinner with Rali is a reserved leg on Oct 15, travel leg covers Oct 10 only", () => {
   const w = fresh().window;
   const legs = w.__trip.TRIP.legs;
   const dinner = legs.find((l) => l.id === "dinner-rali");
@@ -435,7 +435,68 @@ test("dinner with Rali is a reserved leg on Oct 15, family stay ends Oct 14", ()
   assert.strictEqual(dinner.date, "Oct 15", "dinner is on Oct 15");
   assert.ok(dinner.event && dinner.event.en && dinner.event.bg, "dinner has event en/bg");
   const plovdiv = legs.find((l) => l.id === "george-plovdiv");
-  assert.strictEqual(plovdiv.date, "Oct 10-14", "family stay now ends Oct 14");
+  assert.strictEqual(plovdiv.date, "Oct 10", "travel leg covers Oct 10 only");
+  assert.ok(!legs.some((l) => /^Oct (11|12)(\b|-)/.test(l.date)), "Oct 11-12 have no leg, so they stay free");
+});
+
+test("Oct 13 has its own timeline card with time, restaurant, and links", () => {
+  const w = fresh().window;
+  const d = w.document;
+  const card = Array.from(d.querySelectorAll("#timeline .timeline-card"))
+    .find((c) => c.querySelector(".tc-date").textContent === "Oct 13");
+  assert.ok(card, "Oct 13 card rendered separately from the family leg");
+  assert.ok(card.querySelector(".tc-day").textContent.includes("Tuesday"), "Tuesday shown");
+  assert.ok(card.querySelector(".tc-title").textContent.includes("Dinner with classmates"), "classmates title shown");
+
+  const event = card.querySelector(".tc-event");
+  assert.ok(event, "event section rendered");
+  assert.ok(event.textContent.includes("19:00"), "19:00 start time shown");
+  assert.ok(event.textContent.includes("Central Park"), "restaurant name shown");
+
+  const site = event.querySelector("a.tc-site");
+  assert.ok(site, "restaurant website link rendered");
+  assert.strictEqual(site.getAttribute("href"), "https://www.centralpark-bg.com/mladejki-hulm");
+  const map = event.querySelector("a.tc-map");
+  assert.ok(map, "restaurant map link rendered");
+  assert.ok(map.getAttribute("href").indexOf("google.com/maps") !== -1, "map href points at Google Maps");
+
+  w.__trip.setLang("bg");
+  const bgCard = Array.from(d.querySelectorAll("#timeline .timeline-card"))
+    .find((c) => c.querySelector(".tc-date").textContent === "Oct 13");
+  assert.ok(bgCard.querySelector(".tc-day").textContent.includes("Вторник"), "BG weekday shown");
+  assert.ok(bgCard.querySelector(".tc-event").textContent.includes("Младежки хълм"), "BG venue shown");
+  assert.ok(bgCard.querySelector(".tc-event a.tc-map").textContent.includes("карта"), "BG map label");
+});
+
+test("Oct 14 has its own timeline card for Anton's birthday dinner", () => {
+  const w = fresh().window;
+  const d = w.document;
+  const card = Array.from(d.querySelectorAll("#timeline .timeline-card"))
+    .find((c) => c.querySelector(".tc-date").textContent === "Oct 14");
+  assert.ok(card, "Oct 14 card rendered");
+  assert.ok(card.querySelector(".tc-day").textContent.includes("Wednesday"), "Wednesday shown");
+  assert.ok(card.querySelector(".tc-title").textContent.includes("Anton"), "Anton in title");
+  assert.ok(card.querySelector(".tc-event"), "event section rendered");
+  assert.ok(card.querySelector(".tc-event").textContent.includes("Anton"), "event detail names Anton");
+});
+
+test("Oct 11 and Oct 12 are free days in the calendar and reservable", () => {
+  const w = fresh().window;
+  const d = w.document;
+  d.querySelector("#plan-toggle").dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
+  ["Oct 11", "Oct 12"].forEach((label) => {
+    const cell = Array.from(d.querySelectorAll("#calendar .cal-day"))
+      .find((c) => c.querySelector(".cal-day-date").textContent === label);
+    assert.ok(cell, label + " cell rendered");
+    assert.ok(cell.classList.contains("free"), label + " is free");
+    assert.ok(cell.querySelector(".cal-day-desc").textContent.includes("Free day"), label + " shows free day");
+
+    const opt = Array.from(d.querySelectorAll("#plan-day option"))
+      .find((o) => o.value === label);
+    assert.ok(opt, label + " option rendered");
+    assert.ok(!opt.disabled, label + " can be reserved on the form");
+    assert.ok(opt.textContent.includes("[Free]"), label + " option tagged Free");
+  });
 });
 
 test("dinner event renders in the timeline with an Event label", () => {

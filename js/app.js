@@ -141,6 +141,14 @@
       html += '<div class="tc-section tc-event">';
       html += '<span class="tc-label">' + (state.lang === "bg" ? "Събитие" : "Event") + '</span>';
       html += '<span class="tc-event-detail">' + escapeHtml(t(leg.event)) + '</span>';
+      if (leg.event.website) {
+        html += ' <a class="tc-site" href="' + escapeHtml(leg.event.website) + '" target="_blank" rel="noopener">' +
+          (state.lang === "bg" ? "сайт" : "website") + '</a>';
+      }
+      if (leg.event.mapQuery) {
+        html += ' <a class="tc-map" href="' + mapsLink(leg.event.mapQuery) + '" target="_blank" rel="noopener">' +
+          (state.lang === "bg" ? "карта" : "map") + '</a>';
+      }
       html += '</div>';
     }
 

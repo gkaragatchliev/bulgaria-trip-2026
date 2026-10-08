@@ -71,13 +71,14 @@ Bulgarian uses 24-hour time for flights.
 
 ## Data Model
 - TRIP_CONFIG: title, subtitle, travelers, email, country, month, primary color
-- TRIP.legs[]: each leg has id, location, date, day, title, flight/flights, drive, accommodation, notes, thingsToSee, pullquote
+- TRIP.legs[]: each leg has id, location, date, day, title, flight/flights, drive, accommodation, event, notes, thingsToSee, pullquote
+- Leg event: { en, bg, website?, mapQuery? } renders an Event block with optional website + Google Maps links
 - TRIP.busyDays[]: { date, title } days forced to busy (own calendar color, not reservable on the form)
 - Drive legs: { from, to, duration } for map + traffic links
 - All user-facing text: { en: "...", bg: "..." } bilingual objects
 
 ## Tests
-42 tests covering:
+45 tests covering:
 - Itinerary renders all legs
 - Language toggle switches content
 - TBD placeholders display correctly

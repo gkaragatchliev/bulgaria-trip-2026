@@ -65,7 +65,8 @@ To create a new trip: copy folder, edit `js/config.js` + `js/data.js`, deploy.
 
 ## Current state
 
-- 14 itinerary legs fully populated with real data.
+- 16 itinerary legs fully populated with real data. Oct 11-12 have no leg (free days);
+  Oct 13 (classmates dinner) and Oct 14 (Anton's birthday) are legs + busyDays entries.
 - Template system: `config.js` holds trip metadata, `data.js` holds legs.
 - Vendor libs: Splitting.js v1.1.0, Rough.js v4.6.6.
 - Drive legs (3): Sofia-Melnik, Melnik-Plovdiv, Plovdiv-Sofia with Google Maps + traffic links.
